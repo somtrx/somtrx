@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SOMTRX — Research Archive</title>
+  <meta name="description" content="Deep-dives into cognitive bias, social dynamics, and the hidden systems behind human decisions. Psychology decoded for the modern mind." />
+  <meta name="keywords" content="cognitive bias, social dynamics, psychology, human behavior, SOMTRX, decision making, attachment theory" />
+  <meta property="og:title" content="SOMTRX Research Archive" />
+  <meta property="og:description" content="The system behind every decision. Decoded." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://somtrx.in/articles/" />
+  <link rel="canonical" href="https://somtrx.in/articles/" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,900;1,900&family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #080808;
+      --surface: #0f0f0f;
+      --border: rgba(201, 168, 76, 0.15);
+      --gold: #C9A84C;
+      --gold-dim: rgba(201, 168, 76, 0.6);
+      --text: #F0ECE6;
+      --text-muted: rgba(240, 236, 230, 0.45);
+      --text-sub: rgba(240, 236, 230, 0.7);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── GRAIN OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.6;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      padding: 28px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      background: linear-gradient(to bottom, rgba(8,8,8,0.95) 0%, transparent 100%);
+      backdrop-filter: blur(2px);
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: 1.1rem;
+      letter-spacing: 0.2em;
+      color: var(--text);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .nav-logo:hover { color: var(--gold); }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.3s;
+      font-weight: 600;
+    }
+
+    .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+
+    /* ── HEADER ── */
+    .archive-header {
+      padding: 160px 48px 64px;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      z-index: 1;
+    }
+
+    .archive-header .label {
+      font-size: 0.6rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 700;
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.2s;
+    }
+
+    .archive-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.4s;
+    }
+
+    .archive-header h1 em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .archive-header .sub {
+      margin-top: 20px;
+      font-size: 0.85rem;
+      color: var(--text-sub);
+      letter-spacing: 0.04em;
+      max-width: 420px;
+      line-height: 1.7;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.6s;
+    }
+
+    /* ── FILTER BAR ── */
+    .filter-bar {
+      padding: 28px 48px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.8s;
+    }
+
+    .filter-btn {
+      padding: 6px 16px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-muted);
+      font-family: 'Syne', sans-serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+
+    .filter-btn:hover, .filter-btn.active {
+      border-color: var(--gold);
+      color: var(--gold);
+      background: rgba(201, 168, 76, 0.05);
+    }
+
+    /* ── ARTICLE GRID ── */
+    .archive-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Featured post — full width */
+    .post-card.featured {
+      grid-column: 1 / -1;
+      border-bottom: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .post-card.featured .card-content {
+      padding: 64px 48px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .post-card.featured .card-visual {
+      background: var(--surface);
+      border-left: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 360px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-visual-inner {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 8vw, 7rem);
+      font-weight: 900;
+      font-style: italic;
+      color: rgba(201, 168, 76, 0.08);
+      line-height: 1;
+      text-align: center;
+      padding: 32px;
+      user-select: none;
+    }
+
+    .card-visual::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold-dim), transparent);
+    }
+
+    /* Standard post cards */
+    .post-card:not(.featured) {
+      grid-column: span 6;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .post-card:not(.featured):nth-child(even) {
+      border-right: none;
+    }
+
+    .post-card:not(.featured) .card-content {
+      padding: 44px 48px;
+    }
+
+    /* Card internals */
+    .card-meta {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .card-tag {
+      font-size: 0.55rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 700;
+      border: 1px solid rgba(201, 168, 76, 0.3);
+      padding: 3px 10px;
+    }
+
+    .card-date {
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .card-num {
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      font-weight: 500;
+      margin-left: auto;
+    }
+
+    .card-title {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+      margin-bottom: 14px;
+    }
+
+    .post-card.featured .card-title {
+      font-size: clamp(1.6rem, 3.5vw, 2.6rem);
+    }
+
+    .post-card:not(.featured) .card-title {
+      font-size: clamp(1.2rem, 2vw, 1.7rem);
+    }
+
+    .card-excerpt {
+      font-size: 0.82rem;
+      color: var(--text-sub);
+      line-height: 1.75;
+      letter-spacing: 0.02em;
+      margin-bottom: 32px;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .read-time {
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .card-link {
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--text);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: color 0.3s;
+    }
+
+    .card-link::after {
+      content: '→';
+      transition: transform 0.3s;
+    }
+
+    .card-link:hover {
+      color: var(--gold);
+    }
+
+    .card-link:hover::after {
+      transform: translateX(5px);
+    }
+
+    .post-card {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: background 0.3s;
+    }
+
+    .post-card:hover {
+      background: rgba(201, 168, 76, 0.02);
+    }
+
+    .post-card.visible {
+      animation: fadeUp 0.7s ease forwards;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 40px 48px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-logo {
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 28px;
+    }
+
+    .footer-links a {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+
+    .footer-links a:hover { color: var(--gold); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 22px 24px; }
+      .nav-links { gap: 20px; }
+      .archive-header { padding: 120px 24px 48px; }
+      .filter-bar { padding: 20px 24px; }
+
+      .post-card.featured {
+        grid-template-columns: 1fr;
+      }
+
+      .post-card.featured .card-visual { display: none; }
+      .post-card.featured .card-content { padding: 40px 24px; }
+      .post-card:not(.featured) { grid-column: 1 / -1; border-right: none; }
+      .post-card:not(.featured) .card-content { padding: 36px 24px; }
+
+      footer { padding: 28px 24px; flex-direction: column; gap: 16px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="/" class="nav-logo">SOMTRX</a>
+    <ul class="nav-links">
+      <li><a href="/#systems">Systems</a></li>
+      <li><a href="/articles/" class="active">Archive</a></li>
+      <li><a href="https://instagram.com/somtrx" target="_blank">Instagram</a></li>
+      <li><a href="/#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <header class="archive-header">
+    <p class="label">Research Archive</p>
+    <h1>The <em>System</em><br>Behind Every<br>Decision.</h1>
+    <p class="sub">Cognitive bias, social dynamics, and the subconscious mechanisms most people never interrogate. Decoded.</p>
+  </header>
+
+  <div class="filter-bar" id="filterBar">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="cognitive-bias">Cognitive Bias</button>
+    <button class="filter-btn" data-filter="social-dynamics">Social Dynamics</button>
+    <button class="filter-btn" data-filter="unlearn-love">Unlearn Love</button>
+    <button class="filter-btn" data-filter="decision-systems">Decision Systems</button>
+  </div>
+
+  <main class="archive-grid" id="archiveGrid">
+
+    <!-- FEATURED POST -->
+    <article class="post-card featured" data-category="decision-systems">
+      <div class="card-content">
+        <div>
+          <div class="card-meta">
+            <span class="card-tag">Decision Systems</span>
+            <span class="card-date">May 2025</span>
+            <span class="card-num">001</span>
+          </div>
+          <h2 class="card-title">You Already Decided. Logic Came After.</h2>
+          <p class="card-excerpt">The decision was made in the first two seconds. Everything after — the pros-and-cons list, the research, the deliberation — was your brain's post-hoc justification engine working overtime. Here's why rationality is largely retrospective, and what that means for how you actually make choices.</p>
+        </div>
+        <div class="card-footer">
+          <span class="read-time">8 min read</span>
+          <a href="/articles/you-already-decided.html" class="card-link">Read Research</a>
+        </div>
+      </div>
+      <div class="card-visual">
+        <div class="card-visual-inner">Logic<br>Comes<br>After.</div>
+      </div>
+    </article>
+
+    <!-- POST 002 -->
+    <article class="post-card" data-category="cognitive-bias">
+      <div class="card-content">
+        <div class="card-meta">
+          <span class="card-tag">Cognitive Bias</span>
+          <span class="card-date">Apr 2025</span>
+          <span class="card-num">002</span>
+        </div>
+        <h2 class="card-title">Maslow's Hierarchy Is Wrong.</h2>
+        <p class="card-excerpt">The pyramid that's been printed in every textbook for 70 years was never empirically validated. What actually drives human motivation is messier, more recursive, and far more interesting.</p>
+        <div class="card-footer">
+          <span class="read-time">6 min read</span>
+          <a href="/articles/maslow-is-wrong.html" class="card-link">Read Research</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- POST 003 -->
+    <article class="post-card" data-category="unlearn-love">
+      <div class="card-content">
+        <div class="card-meta">
+          <span class="card-tag">Unlearn Love</span>
+          <span class="card-date">Apr 2025</span>
+          <span class="card-num">003</span>
+        </div>
+        <h2 class="card-title">The Subconscious Contract You Sign When You Fall in Love.</h2>
+        <p class="card-excerpt">Attachment theory tells you your style. But nobody maps the invisible agreements people negotiate without ever speaking them aloud — and what happens when both sides assumed different terms.</p>
+        <div class="card-footer">
+          <span class="read-time">10 min read</span>
+          <a href="/articles/subconscious-contract.html" class="card-link">Read Research</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- POST 004 -->
+    <article class="post-card" data-category="social-dynamics">
+      <div class="card-content">
+        <div class="card-meta">
+          <span class="card-tag">Social Dynamics</span>
+          <span class="card-date">Mar 2025</span>
+          <span class="card-num">004</span>
+        </div>
+        <h2 class="card-title">Why Smart People Believe Stupid Things.</h2>
+        <p class="card-excerpt">Intelligence doesn't protect against motivated reasoning — it just makes you better at defending the conclusion you already wanted. The uncomfortable data on why reasoning ability and belief accuracy are nearly uncorrelated.</p>
+        <div class="card-footer">
+          <span class="read-time">7 min read</span>
+          <a href="/articles/smart-people-stupid-things.html" class="card-link">Read Research</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- POST 005 -->
+    <article class="post-card" data-category="cognitive-bias">
+      <div class="card-content">
+        <div class="card-meta">
+          <span class="card-tag">Cognitive Bias</span>
+          <span class="card-date">Feb 2025</span>
+          <span class="card-num">005</span>
+        </div>
+        <h2 class="card-title">The AI Therapist Delusion.</h2>
+        <p class="card-excerpt">People are forming parasocial bonds with language models and calling it therapy. The clinical picture is more alarming than the tech discourse is willing to admit — and the mechanism is entirely predictable.</p>
+        <div class="card-footer">
+          <span class="read-time">9 min read</span>
+          <a href="/articles/ai-therapist-delusion.html" class="card-link">Read Research</a>
+        </div>
+      </div>
+    </article>
+
+  </main>
+
+  <footer>
+    <span class="footer-logo">© 2026 SOMTRX</span>
+    <div class="footer-links">
+      <a href="https://instagram.com/somtrx" target="_blank">Instagram</a>
+      <a href="https://unlearnlove.com" target="_blank">Unlearn Love</a>
+      <a href="/">Home</a>
+    </div>
+  </footer>
+
+  <script>
+    // Filter logic
+    const btns = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('.post-card');
+
+    btns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        btns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.dataset.filter;
+        cards.forEach(card => {
+          const match = filter === 'all' || card.dataset.category === filter;
+          card.style.display = match ? '' : 'none';
+        });
+      });
+    });
+
+    // Scroll-triggered fade-in
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08 });
+
+    cards.forEach(card => observer.observe(card));
+  </script>
+</body>
+</html>
