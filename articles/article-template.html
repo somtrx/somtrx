@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ══ SEO: Replace these for each article ══ -->
+  <title>SOMTRX — [Article Title Here]</title>
+  <meta name="description" content="[A 140–160 character description of this article for Google.]" />
+  <meta name="keywords" content="cognitive bias, psychology, [article-specific keywords]" />
+  <meta name="author" content="SOMTRX — Soumyakanta Nayak" />
+  <link rel="canonical" href="https://somtrx.in/articles/[article-slug].html" />
+
+  <!-- Open Graph (for Instagram link-in-bio previews) -->
+  <meta property="og:title" content="[Article Title Here] — SOMTRX" />
+  <meta property="og:description" content="[Short hook sentence — same as meta description works]" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://somtrx.in/articles/[article-slug].html" />
+  <meta property="og:site_name" content="SOMTRX" />
+
+  <!-- Article schema for Google -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "[Article Title Here]",
+    "author": { "@type": "Person", "name": "Soumyakanta Nayak", "url": "https://somtrx.in" },
+    "publisher": { "@type": "Organization", "name": "SOMTRX", "url": "https://somtrx.in" },
+    "datePublished": "2025-05-01",
+    "dateModified": "2025-05-01",
+    "description": "[Meta description here]"
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #080808;
+      --surface: #0d0d0d;
+      --border: rgba(201, 168, 76, 0.12);
+      --gold: #C9A84C;
+      --gold-dim: rgba(201, 168, 76, 0.5);
+      --text: #F0ECE6;
+      --text-muted: rgba(240, 236, 230, 0.42);
+      --text-sub: rgba(240, 236, 230, 0.68);
+      --max-prose: 680px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Grain */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.6;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      padding: 26px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      background: linear-gradient(to bottom, rgba(8,8,8,0.97) 0%, transparent 100%);
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: 1rem;
+      letter-spacing: 0.22em;
+      color: var(--text);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .nav-logo:hover { color: var(--gold); }
+
+    .nav-right {
+      display: flex;
+      gap: 32px;
+      align-items: center;
+    }
+
+    .nav-back {
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-back::before { content: '←'; }
+
+    .nav-back:hover { color: var(--gold); }
+
+    /* ── READING PROGRESS ── */
+    #progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 2px;
+      background: var(--gold);
+      width: 0%;
+      z-index: 200;
+      transition: width 0.1s linear;
+    }
+
+    /* ── HERO ── */
+    .article-hero {
+      padding: 140px 48px 72px;
+      max-width: 1100px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      animation: fadeUp 0.9s ease forwards 0.2s;
+    }
+
+    .hero-meta {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      margin-bottom: 28px;
+    }
+
+    .hero-tag {
+      font-size: 0.58rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 700;
+      border: 1px solid rgba(201, 168, 76, 0.3);
+      padding: 4px 12px;
+    }
+
+    .hero-date, .hero-read {
+      font-size: 0.6rem;
+      letter-spacing: 0.14em;
+      color: var(--text-muted);
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+
+    .hero-date::before { content: '·  '; }
+
+    .article-title {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: clamp(2.2rem, 5.5vw, 4.2rem);
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+      margin-bottom: 28px;
+    }
+
+    .article-title em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .article-lede {
+      font-size: clamp(1rem, 1.5vw, 1.15rem);
+      color: var(--text-sub);
+      line-height: 1.8;
+      max-width: 620px;
+      letter-spacing: 0.01em;
+      margin-bottom: 48px;
+    }
+
+    .hero-divider {
+      width: 48px;
+      height: 1px;
+      background: var(--gold-dim);
+    }
+
+    /* ── INSTAGRAM CTA STRIP ── */
+    .ig-strip {
+      background: rgba(201, 168, 76, 0.04);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      z-index: 1;
+    }
+
+    .ig-text {
+      font-size: 0.72rem;
+      color: var(--text-sub);
+      letter-spacing: 0.04em;
+    }
+
+    .ig-text strong {
+      color: var(--gold);
+    }
+
+    .ig-link {
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--text);
+      text-decoration: none;
+      border: 1px solid var(--border);
+      padding: 9px 20px;
+      transition: all 0.3s;
+      white-space: nowrap;
+    }
+
+    .ig-link:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+      background: rgba(201, 168, 76, 0.05);
+    }
+
+    /* ── ARTICLE LAYOUT ── */
+    .article-body-wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 80px 48px;
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      gap: 80px;
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.5s;
+    }
+
+    /* ── PROSE ── */
+    .prose { max-width: var(--max-prose); }
+
+    .prose h2 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      margin: 52px 0 20px;
+      color: var(--text);
+    }
+
+    .prose h3 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 1.15rem;
+      font-style: italic;
+      margin: 36px 0 14px;
+      color: var(--text);
+    }
+
+    .prose p {
+      font-size: 1rem;
+      line-height: 1.85;
+      color: var(--text-sub);
+      letter-spacing: 0.015em;
+      margin-bottom: 22px;
+    }
+
+    .prose p:first-child {
+      font-size: 1.08rem;
+      color: var(--text);
+    }
+
+    .prose strong { color: var(--text); font-weight: 700; }
+
+    .prose em { font-style: italic; }
+
+    /* Pull quote */
+    .prose blockquote {
+      border-left: 2px solid var(--gold);
+      padding: 6px 0 6px 28px;
+      margin: 40px 0;
+    }
+
+    .prose blockquote p {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.1rem, 2vw, 1.45rem);
+      font-style: italic;
+      color: var(--text);
+      line-height: 1.5;
+      letter-spacing: 0;
+      margin: 0;
+    }
+
+    /* Key insight callout */
+    .callout {
+      background: rgba(201, 168, 76, 0.05);
+      border: 1px solid var(--border);
+      padding: 28px 32px;
+      margin: 40px 0;
+    }
+
+    .callout-label {
+      font-size: 0.55rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .callout p {
+      font-size: 0.9rem;
+      color: var(--text-sub);
+      margin: 0;
+    }
+
+    /* Reference link inline */
+    .ref-link {
+      color: var(--gold);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(201, 168, 76, 0.3);
+      transition: border-color 0.2s;
+    }
+
+    .ref-link:hover { border-color: var(--gold); }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      position: sticky;
+      top: 100px;
+      align-self: start;
+    }
+
+    .sidebar-section {
+      margin-bottom: 48px;
+    }
+
+    .sidebar-label {
+      font-size: 0.55rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 700;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* TOC */
+    .toc-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .toc-list a {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      line-height: 1.5;
+      transition: color 0.25s;
+      display: block;
+      padding: 4px 0;
+    }
+
+    .toc-list a:hover, .toc-list a.active { color: var(--gold); }
+
+    /* Related posts */
+    .related-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .related-list li a {
+      font-size: 0.8rem;
+      color: var(--text-sub);
+      text-decoration: none;
+      line-height: 1.5;
+      letter-spacing: 0.01em;
+      transition: color 0.25s;
+      display: block;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .related-list li a:hover { color: var(--gold); }
+
+    .related-tag {
+      display: block;
+      font-size: 0.55rem;
+      letter-spacing: 0.2em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    /* ── SOURCES ── */
+    .sources-section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 48px 80px;
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.7s;
+    }
+
+    .sources-title {
+      font-size: 0.6rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 700;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sources-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .sources-list li {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      letter-spacing: 0.01em;
+      display: flex;
+      gap: 12px;
+    }
+
+    .src-num {
+      color: var(--gold);
+      font-weight: 700;
+      min-width: 20px;
+      font-size: 0.6rem;
+      margin-top: 2px;
+    }
+
+    .sources-list a {
+      color: var(--text-muted);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: color 0.25s;
+    }
+
+    .sources-list a:hover { color: var(--gold); }
+
+    /* ── NEXT ARTICLE ── */
+    .next-article {
+      border-top: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+      z-index: 1;
+    }
+
+    .next-article a {
+      padding: 52px 48px;
+      text-decoration: none;
+      transition: background 0.3s;
+      display: block;
+    }
+
+    .next-article a:hover { background: rgba(201, 168, 76, 0.03); }
+
+    .next-article a:first-child { border-right: 1px solid var(--border); }
+
+    .next-label {
+      font-size: 0.58rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .next-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 900;
+      color: var(--text);
+      line-height: 1.25;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 36px 48px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-logo {
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 28px;
+    }
+
+    .footer-links a {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+
+    .footer-links a:hover { color: var(--gold); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 960px) {
+      nav { padding: 22px 24px; }
+      .article-hero { padding: 110px 24px 56px; }
+      .ig-strip { padding: 16px 24px; gap: 12px; }
+      .article-body-wrap { grid-template-columns: 1fr; gap: 0; padding: 52px 24px; }
+      .sidebar { display: none; }
+      .sources-section { padding: 0 24px 60px; }
+      .next-article { grid-template-columns: 1fr; }
+      .next-article a:first-child { border-right: none; border-bottom: 1px solid var(--border); }
+      .next-article a { padding: 36px 24px; }
+      footer { padding: 28px 24px; flex-direction: column; gap: 16px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="progress-bar"></div>
+
+  <nav>
+    <a href="/" class="nav-logo">SOMTRX</a>
+    <div class="nav-right">
+      <a href="/articles/" class="nav-back">Archive</a>
+    </div>
+  </nav>
+
+  <!-- ══ ARTICLE HERO — Edit per post ══ -->
+  <header class="article-hero">
+    <div class="hero-meta">
+      <span class="hero-tag">Decision Systems</span>
+      <span class="hero-date">May 2025</span>
+      <span class="hero-read">· 8 min read</span>
+    </div>
+    <h1 class="article-title">
+      You Already Decided.<br><em>Logic Came After.</em>
+    </h1>
+    <p class="article-lede">
+      The decision was made in the first two seconds. Everything after — the pros-and-cons list, the research, the deliberation — was your brain's post-hoc justification engine running cover.
+    </p>
+    <div class="hero-divider"></div>
+  </header>
+
+  <!-- ══ INSTAGRAM TIE-IN STRIP ══ -->
+  <div class="ig-strip">
+    <span class="ig-text">This research expands the <strong>@somtrx</strong> reel — <em>"Your logic is a cover story."</em></span>
+    <a href="https://instagram.com/somtrx" target="_blank" class="ig-link">Watch the reel →</a>
+  </div>
+
+  <!-- ══ ARTICLE BODY ══ -->
+  <div class="article-body-wrap">
+
+    <article class="prose">
+
+      <p>
+        In 1983, Benjamin Libet ran an experiment that should have collapsed the way we talk about free will. Participants watched a clock, moved their wrist whenever they felt like it, and reported when the urge to move arrived. Libet's EEG readings showed the brain's readiness potential — the buildup toward movement — began <strong>550 milliseconds</strong> before the participants consciously intended to act.
+      </p>
+
+      <p>
+        The implication was uncomfortable: the decision preceded the awareness of deciding. You were, in a measurable sense, the last to know.
+      </p>
+
+      <!-- ══ SECTION 1 ══ -->
+      <h2 id="section-rationalization">The Rationalization Machine</h2>
+
+      <p>
+        The psychologist Jonathan Haidt calls this <a href="#sources" class="ref-link">the social intuitionist model</a>. His argument: moral judgments — and most judgments — are made intuitively, rapidly, and below conscious access. The reasoning we produce afterward isn't how we arrived at the conclusion. It's how we defend it to ourselves and others.
+      </p>
+
+      <blockquote>
+        <p>"The emotional tail wags the rational dog."</p>
+      </blockquote>
+
+      <p>
+        This isn't a character flaw unique to low-information people. In studies with law students, economics graduates, and trained statisticians, motivated reasoning shows up just as reliably — and in some cases <em>more</em> reliably, because high verbal intelligence produces more elaborate justifications.
+      </p>
+
+      <div class="callout">
+        <p class="callout-label">Key Mechanism</p>
+        <p>The brain's primary function isn't accuracy. It's prediction and narrative coherence. Once a conclusion is formed, the reasoning system's job is to defend it — not to interrogate it. This is why "thinking harder" about a biased conclusion often makes the bias worse, not better.</p>
+      </div>
+
+      <!-- ══ SECTION 2 ══ -->
+      <h2 id="section-evidence">What the Evidence Actually Shows</h2>
+
+      <p>
+        The split-brain experiments of Gazzaniga and Sperry gave us a window into this mechanism directly. When the corpus callosum is severed — disconnecting the brain's two hemispheres — the left hemisphere, which controls language and reasoning, will confabulate explanations for actions initiated by the right hemisphere that it cannot observe. It doesn't say "I don't know." It invents a reason. Confidently.
+      </p>
+
+      <p>
+        Gazzaniga called the reasoning-narrative system <strong>the Interpreter</strong>. Its job is not truth. Its job is <em>coherence</em>.
+      </p>
+
+      <h3>The consumer behavior data</h3>
+
+      <p>
+        Gerald Zaltman's decades of consumer research at Harvard suggest that roughly <a href="#sources" class="ref-link">95% of purchase decisions</a> occur subconsciously. The stated reasons people give — price, features, timing — are often post-hoc rationalizations of choices that were already made at the emotional, associative level.
+      </p>
+
+      <!-- ══ SECTION 3 ══ -->
+      <h2 id="section-implications">What This Actually Means For You</h2>
+
+      <p>
+        The practical implication isn't nihilism. Knowing about the Interpreter doesn't eliminate it — but it creates a gap. A pause where you can ask: <em>is this reasoning, or is this defending?</em>
+      </p>
+
+      <p>
+        The difference has a behavioral fingerprint. Reasoning seeks disconfirming evidence. Defense-mode avoids it, reframes it, or attacks the source. When you notice yourself explaining why something that contradicts your view "doesn't count" — that's the Interpreter working.
+      </p>
+
+      <div class="callout">
+        <p class="callout-label">The Test</p>
+        <p>Ask: <strong>what evidence would change my mind?</strong> If you genuinely can't answer — or if the bar you set is impossibly high — you're not reasoning. You're rationalizing.</p>
+      </div>
+
+      <p>
+        The goal isn't to distrust all intuition. Intuition encodes pattern recognition built over time. The goal is to stop mistaking the defense attorney in your head for the truth-seeking investigator.
+      </p>
+
+    </article>
+
+    <!-- ══ SIDEBAR ══ -->
+    <aside class="sidebar">
+
+      <div class="sidebar-section">
+        <p class="sidebar-label">In This Article</p>
+        <ul class="toc-list" id="toc">
+          <li><a href="#section-rationalization">The Rationalization Machine</a></li>
+          <li><a href="#section-evidence">What the Evidence Shows</a></li>
+          <li><a href="#section-implications">What This Means For You</a></li>
+          <li><a href="#sources">Sources</a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-section">
+        <p class="sidebar-label">Related Research</p>
+        <ul class="related-list">
+          <li>
+            <a href="/articles/maslow-is-wrong.html">
+              <span class="related-tag">Cognitive Bias</span>
+              Maslow's Hierarchy Is Wrong.
+            </a>
+          </li>
+          <li>
+            <a href="/articles/smart-people-stupid-things.html">
+              <span class="related-tag">Social Dynamics</span>
+              Why Smart People Believe Stupid Things.
+            </a>
+          </li>
+          <li>
+            <a href="/articles/subconscious-contract.html">
+              <span class="related-tag">Unlearn Love</span>
+              The Subconscious Contract You Sign When You Fall in Love.
+            </a>
+          </li>
+        </ul>
+      </div>
+
+    </aside>
+  </div>
+
+  <!-- ══ SOURCES ══ -->
+  <section class="sources-section" id="sources">
+    <p class="sources-title">Sources & Further Reading</p>
+    <ul class="sources-list">
+      <li>
+        <span class="src-num">01</span>
+        <span>Libet, B. et al. (1983). Time of conscious intention to act in relation to onset of cerebral activity. <em>Brain</em>, 106(3), 623–642.</span>
+      </li>
+      <li>
+        <span class="src-num">02</span>
+        <span>Haidt, J. (2001). The emotional dog and its rational tail: a social intuitionist approach to moral judgment. <em>Psychological Review</em>, 108(4), 814–834.</span>
+      </li>
+      <li>
+        <span class="src-num">03</span>
+        <span>Gazzaniga, M.S. (1998). <em>The Mind's Past</em>. University of California Press.</span>
+      </li>
+      <li>
+        <span class="src-num">04</span>
+        <span>Zaltman, G. (2003). <em>How Customers Think: Essential Insights into the Mind of the Market</em>. Harvard Business School Press.</span>
+      </li>
+      <li>
+        <span class="src-num">05</span>
+        <span>Kunda, Z. (1990). The case for motivated reasoning. <em>Psychological Bulletin</em>, 108(3), 480–498.</span>
+      </li>
+    </ul>
+  </section>
+
+  <!-- ══ NEXT / PREV NAVIGATION ══ -->
+  <nav class="next-article">
+    <a href="/articles/maslow-is-wrong.html">
+      <p class="next-label">← Previous</p>
+      <p class="next-title">Maslow's Hierarchy Is Wrong.</p>
+    </a>
+    <a href="/articles/subconscious-contract.html">
+      <p class="next-label">Next →</p>
+      <p class="next-title">The Subconscious Contract You Sign When You Fall in Love.</p>
+    </a>
+  </nav>
+
+  <footer>
+    <span class="footer-logo">© 2026 SOMTRX</span>
+    <div class="footer-links">
+      <a href="https://instagram.com/somtrx" target="_blank">Instagram</a>
+      <a href="https://unlearnlove.com" target="_blank">Unlearn Love</a>
+      <a href="/articles/">Archive</a>
+    </div>
+  </footer>
+
+  <script>
+    // Reading progress bar
+    window.addEventListener('scroll', () => {
+      const doc = document.documentElement;
+      const progress = (doc.scrollTop / (doc.scrollHeight - doc.clientHeight)) * 100;
+      document.getElementById('progress-bar').style.width = progress + '%';
+    });
+
+    // Active TOC highlight
+    const sections = document.querySelectorAll('.prose h2[id], .sources-section[id]');
+    const tocLinks = document.querySelectorAll('.toc-list a');
+
+    const tocObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          tocLinks.forEach(link => {
+            link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
+          });
+        }
+      });
+    }, { rootMargin: '-20% 0px -60% 0px' });
+
+    sections.forEach(s => tocObserver.observe(s));
+  </script>
+
+</body>
+</html>
