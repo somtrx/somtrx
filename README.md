@@ -5,7 +5,7 @@
 
 ### Current Nodes
 - 🌐 [somtrx.in](https://somtrx.in)
-- 🧠 [Unlearn Love](https://unlearnlove.com)
+- 🧠 [SOMTRX](https://www.instagram.com/somtrx/)
 
 ---
 *Architected by Soumyakanta Nayak*
