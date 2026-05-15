@@ -1199,6 +1199,134 @@
     }
     .contact-modal-close:hover { border-color: var(--accent); color: var(--accent); }
 
+    /* ══════════════════════════════════════════
+       ABOUT SECTION
+    ══════════════════════════════════════════ */
+    .about-section {
+      padding: 10rem 3rem;
+      border-bottom: 1px solid var(--low);
+      position: relative;
+      overflow: hidden;
+    }
+    .about-section::before {
+      content: 'ABOUT';
+      position: absolute;
+      top: 50%;
+      right: -2rem;
+      transform: translateY(-50%);
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(6rem,16vw,14rem);
+      font-weight: 900;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(201,168,76,0.04);
+      pointer-events: none;
+      white-space: nowrap;
+      letter-spacing: -6px;
+    }
+    .about-inner {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 8rem;
+      align-items: start;
+      position: relative;
+      z-index: 1;
+    }
+    .about-left {
+      position: sticky;
+      top: 8rem;
+    }
+    .about-left h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -2px;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+    .about-left h2 em { font-style: italic; color: var(--accent); }
+    .about-founder {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--low);
+    }
+    .about-founder-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .about-founder-name {
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .about-founder-name strong {
+      color: var(--accent);
+      display: block;
+      font-size: 0.8rem;
+      letter-spacing: 2px;
+    }
+    .about-right {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .about-para {
+      padding: 2.5rem 0;
+      border-bottom: 1px solid var(--low);
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 2;
+      position: relative;
+    }
+    .about-para:first-child { padding-top: 0; }
+    .about-para:last-child { border-bottom: none; }
+    .about-para-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.75rem;
+      font-weight: 900;
+      color: rgba(201,168,76,0.3);
+      letter-spacing: 2px;
+      display: block;
+      margin-bottom: 0.75rem;
+    }
+    .about-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 3rem;
+      padding-top: 2.5rem;
+      border-top: 1px solid var(--low);
+    }
+    .about-tag {
+      font-size: 0.62rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      border: 1px solid var(--low);
+      padding: 0.4rem 0.9rem;
+      transition: border-color 0.3s, color 0.3s;
+    }
+    .about-tag:hover { border-color: var(--accent); color: var(--accent); }
+
+    @media (max-width: 1024px) {
+      .about-section { padding: 7rem 2rem; }
+      .about-inner { grid-template-columns: 1fr 1.4fr; gap: 4rem; }
+      .about-left { position: static; }
+    }
+    @media (max-width: 768px) {
+      .about-section { padding: 6rem 1.5rem; }
+      .about-inner { grid-template-columns: 1fr; gap: 3rem; }
+    }
+
     /* Corner accent lines */
     .contact-modal::before,
     .contact-modal::after {
@@ -1243,6 +1371,7 @@
     <div class="nav-links">
       <a href="#philosophy" class="hide-mobile">Systems</a>
       <a href="#projects" class="hide-mobile">Work</a>
+      <a href="#about" class="hide-mobile">About</a>
       <a href="/articles/">Archive</a>
       <button class="nav-cta" id="contact-btn" style="background:none;cursor:none;font-family:'Syne',sans-serif;">Contact</button>
     </div>
@@ -1255,6 +1384,7 @@
   <div class="nav-mobile-panel" id="mobile-panel">
     <a href="#philosophy" class="mobile-nav-link">Systems</a>
     <a href="#projects" class="mobile-nav-link">Work</a>
+    <a href="#about" class="mobile-nav-link">About</a>
     <a href="/articles/" class="mobile-nav-link">Archive</a>
     <button class="mobile-nav-link" id="mobile-contact-btn" style="background:none;border:none;font-family:'Playfair Display',serif;font-size:clamp(2.2rem,8vw,3.5rem);font-weight:900;color:var(--text);letter-spacing:-1px;text-transform:uppercase;cursor:pointer;transition:color 0.3s;">Contact</button>
     <div class="nav-mobile-socials">
@@ -1471,6 +1601,52 @@
 </div>
 ```
 
+  </section>
+
+  <!-- ════════ ABOUT ════════ -->
+
+  <section class="about-section" id="about">
+    <div class="about-inner">
+      <div class="about-left reveal left">
+        <span class="s-label">About</span>
+        <h2>The<br><em>Platform.</em></h2>
+        <div class="about-founder">
+          <div class="about-founder-dot"></div>
+          <div class="about-founder-name">
+            Founded by
+            <strong>Soumyakanta Nayak</strong>
+          </div>
+        </div>
+      </div>
+      <div class="about-right reveal right">
+        <div class="about-para">
+          <span class="about-para-num">01</span>
+          SOMTRX is a psychology and self-improvement media platform focused on human behavior, cognition, mindset, productivity, decision-making, and modern digital culture. Through articles, visual storytelling, and educational content, SOMTRX explores how people think, react, procrastinate, build confidence, form habits, make decisions, and navigate ambition in the modern world.
+        </div>
+        <div class="about-para">
+          <span class="about-para-num">02</span>
+          The platform combines psychology, behavioral science, self-awareness, and performance-driven thinking to help individuals think more clearly, communicate better, and operate at a higher level — personally and professionally.
+        </div>
+        <div class="about-para">
+          <span class="about-para-num">03</span>
+          SOMTRX creates content around psychology, mental models, self-development, critical thinking, the attention economy, social behavior, and personal growth — for students, creators, entrepreneurs, and ambitious individuals.
+        </div>
+        <div class="about-para">
+          <span class="about-para-num">04</span>
+          Founded by Soumyakanta Nayak, SOMTRX aims to make complex psychological and behavioral concepts simple, practical, visually engaging, and applicable to everyday life.
+        </div>
+        <div class="about-tags">
+          <span class="about-tag">Psychology</span>
+          <span class="about-tag">Behavioral Science</span>
+          <span class="about-tag">Mental Models</span>
+          <span class="about-tag">Self-Development</span>
+          <span class="about-tag">Critical Thinking</span>
+          <span class="about-tag">Attention Economy</span>
+          <span class="about-tag">Social Behavior</span>
+          <span class="about-tag">Personal Growth</span>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- ════════ CTA ════════ -->
