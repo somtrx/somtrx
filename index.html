@@ -833,31 +833,235 @@
     .reveal-delay-4 { transition-delay: 0.5s; }
 
     /* ══════════════════════════════════════════
-       RESPONSIVE
+       SOCIAL STRIP
     ══════════════════════════════════════════ */
-    @media (max-width: 900px) {
+    .social-strip {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 1.2rem 3rem;
+      border-bottom: 1px solid var(--low);
+      overflow: hidden;
+    }
+    .social-strip-label {
+      font-size: 0.6rem;
+      font-weight: 800;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--muted);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .social-strip-line {
+      width: 30px;
+      height: 1px;
+      background: var(--low);
+      flex-shrink: 0;
+    }
+    .social-strip-links {
+      display: flex;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+    }
+    .social-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 0.9rem;
+      border: 1px solid var(--low);
+      text-decoration: none;
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      transition: border-color 0.3s, color 0.3s, background 0.3s;
+      white-space: nowrap;
+    }
+    .social-pill svg {
+      width: 11px; height: 11px;
+      fill: currentColor;
+      flex-shrink: 0;
+    }
+    .social-pill:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-dim);
+    }
+
+    /* ══════════════════════════════════════════
+       HAMBURGER MENU
+    ══════════════════════════════════════════ */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+      background: none;
+      border: none;
+      z-index: 6001;
+    }
+    .nav-hamburger span {
+      display: block;
+      width: 24px;
+      height: 1px;
+      background: var(--text);
+      transition: transform 0.4s var(--ease), opacity 0.3s, width 0.3s;
+      transform-origin: center;
+    }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; width: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+    .nav-mobile-panel {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(8,8,8,0.97);
+      z-index: 5999;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2.5rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s var(--ease);
+    }
+    .nav-mobile-panel.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .nav-mobile-panel a {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 8vw, 3.5rem);
+      font-weight: 900;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: -1px;
+      text-transform: uppercase;
+      transition: color 0.3s;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: color 0.3s, opacity 0.4s var(--ease), transform 0.4s var(--ease);
+    }
+    .nav-mobile-panel.open a {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .nav-mobile-panel.open a:nth-child(1) { transition-delay: 0.05s; }
+    .nav-mobile-panel.open a:nth-child(2) { transition-delay: 0.1s; }
+    .nav-mobile-panel.open a:nth-child(3) { transition-delay: 0.15s; }
+    .nav-mobile-panel.open a:nth-child(4) { transition-delay: 0.2s; }
+    .nav-mobile-panel a:hover { color: var(--accent); }
+    .nav-mobile-socials {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.4s 0.3s var(--ease), transform 0.4s 0.3s var(--ease);
+    }
+    .nav-mobile-panel.open .nav-mobile-socials {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .nav-mobile-socials a {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.65rem !important;
+      letter-spacing: 3px !important;
+      color: var(--muted) !important;
+      font-weight: 700 !important;
+      opacity: 1 !important;
+      transform: none !important;
+      transition: color 0.3s !important;
+    }
+    .nav-mobile-socials a:hover { color: var(--accent) !important; }
+
+    /* ══════════════════════════════════════════
+       RESPONSIVE — LAPTOP (1024–1280px)
+    ══════════════════════════════════════════ */
+    @media (max-width: 1280px) and (min-width: 1025px) {
+      .philosophy { padding: 8rem 2.5rem; gap: 5rem; }
+      .projects-header { padding: 4rem 2.5rem 2.5rem; }
+      .projects-track { padding: 2.5rem; }
+      .articles-section { padding: 8rem 2.5rem; }
+      .cta-section { padding: 10rem 2.5rem; }
+      footer { padding: 2.5rem; }
+      .social-strip { padding: 1.2rem 2.5rem; }
+      nav { padding: 1.5rem 2.5rem; }
+      .hero { padding: 0 2.5rem 4.5rem; }
+    }
+
+    /* ══════════════════════════════════════════
+       RESPONSIVE — TABLET (769–1024px)
+    ══════════════════════════════════════════ */
+    @media (max-width: 1024px) and (min-width: 769px) {
+      nav { padding: 1.25rem 2rem; }
+      .nav-links .hide-mobile { display: none; }
+      .hero { padding: 0 2rem 4.5rem; }
+      .hero-title { font-size: clamp(4rem, 11vw, 7rem); }
+      .social-strip { padding: 1.2rem 2rem; gap: 1rem; }
+      .philosophy { grid-template-columns: 1fr 1fr; gap: 4rem; padding: 7rem 2rem; }
+      .projects-header { padding: 4rem 2rem 2rem; }
+      .projects-track { padding: 2rem; }
+      .project-card { flex: 0 0 360px; height: 440px; }
+      .articles-section { padding: 7rem 2rem; }
+      .articles-grid { grid-template-columns: 1fr 1fr; }
+      .article-item:nth-child(2) { border-right: none; }
+      .article-item:nth-child(3) { border-right: none; border-top: 1px solid var(--low); padding-top: 2.5rem; padding-left: 0; grid-column: 1 / -1; }
+      .cta-section { padding: 9rem 2rem; }
+      footer { padding: 2rem; }
+      .footer-right { gap: 1.25rem; flex-wrap: wrap; justify-content: flex-end; }
+      .stats-row { gap: 1.5rem; }
+    }
+
+    /* ══════════════════════════════════════════
+       RESPONSIVE — MOBILE (≤768px)
+    ══════════════════════════════════════════ */
+    @media (max-width: 768px) {
       nav { padding: 1.25rem 1.5rem; }
+      .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
+      .nav-mobile-panel { display: flex; }
       .hero { padding: 0 1.5rem 4rem; }
-      .philosophy { grid-template-columns: 1fr; gap: 4rem; padding: 7rem 1.5rem; }
-      .projects-header { padding: 4rem 1.5rem 2rem; }
+      .social-strip { padding: 1rem 1.5rem; gap: 0.75rem; }
+      .social-strip-label { display: none; }
+      .social-strip-line { display: none; }
+      .social-pill { padding: 0.35rem 0.75rem; font-size: 0.6rem; }
+      .philosophy { grid-template-columns: 1fr; gap: 4rem; padding: 6rem 1.5rem; }
+      .projects-header { padding: 4rem 1.5rem 2rem; flex-direction: column; align-items: flex-start; gap: 1rem; }
       .projects-track { padding: 2rem 1.5rem; }
-      .articles-section { padding: 7rem 1.5rem; }
+      .articles-section { padding: 6rem 1.5rem; }
       .articles-grid { grid-template-columns: 1fr; }
       .article-item { border-right: none !important; border-bottom: 1px solid var(--low); padding: 2.5rem 0 !important; }
       .article-item:last-child { border-bottom: none; }
-      .cta-section { padding: 8rem 1.5rem; }
-      footer { grid-template-columns: 1fr; gap: 1.5rem; text-align: center; padding: 2rem 1.5rem; }
-      .footer-right { justify-content: center; }
+      .cta-section { padding: 7rem 1.5rem; }
+      footer {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        text-align: center;
+        padding: 2rem 1.5rem;
+      }
+      .footer-right {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
       .stats-row { grid-template-columns: 1fr 1fr; gap: 2rem; }
       .stats-row .stat-item:nth-child(3) { border-left: none; padding-left: 0; }
       #cursor-dot, #cursor-ring { display: none; }
       body { cursor: auto; }
     }
-    @media (max-width: 600px) {
+    @media (max-width: 480px) {
       .hero-title { letter-spacing: -2px; }
       .hero-bottom { flex-direction: column; align-items: flex-start; gap: 2rem; }
-      .project-card { flex: 0 0 85vw; }
+      .project-card { flex: 0 0 88vw; height: auto; min-height: 400px; }
+      .social-strip-links { gap: 0.6rem; }
       .nav-links .hide-mobile { display: none; }
+      .articles-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
     }
   </style>
 
@@ -892,7 +1096,24 @@
       <a href="/articles/">Archive</a>
       <a href="https://www.instagram.com/somtrx/" class="nav-cta">Contact</a>
     </div>
+    <button class="nav-hamburger hoverable" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
   </nav>
+
+  <!-- Mobile Nav Panel -->
+  <div class="nav-mobile-panel" id="mobile-panel">
+    <a href="#philosophy" class="mobile-nav-link">Systems</a>
+    <a href="#projects" class="mobile-nav-link">Work</a>
+    <a href="/articles/" class="mobile-nav-link">Archive</a>
+    <a href="https://www.instagram.com/somtrx/" class="mobile-nav-link">Contact</a>
+    <div class="nav-mobile-socials">
+      <a href="https://www.youtube.com/@somtrx" target="_blank" rel="noopener">YouTube</a>
+      <a href="https://x.com/somtrx" target="_blank" rel="noopener">X</a>
+      <a href="https://medium.com/@somtrx" target="_blank" rel="noopener">Medium</a>
+      <a href="https://www.instagram.com/somtrx/" target="_blank" rel="noopener">Instagram</a>
+    </div>
+  </div>
 
   <!-- ════════ HERO ════════ -->
 
@@ -922,6 +1143,31 @@
 ```
 
   </section>
+
+  <!-- ════════ SOCIAL STRIP ════════ -->
+
+  <div class="social-strip">
+    <span class="social-strip-label">Find me on</span>
+    <div class="social-strip-line"></div>
+    <div class="social-strip-links">
+      <a href="https://www.youtube.com/@somtrx" class="social-pill hoverable" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
+        YouTube
+      </a>
+      <a href="https://x.com/somtrx" class="social-pill hoverable" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>
+        X
+      </a>
+      <a href="https://medium.com/@somtrx" class="social-pill hoverable" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13.54 12a6.8 6.8 0 01-6.77 6.82A6.8 6.8 0 010 12a6.8 6.8 0 016.77-6.82A6.8 6.8 0 0113.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z"/></svg>
+        Medium
+      </a>
+      <a href="https://www.instagram.com/somtrx/" class="social-pill hoverable" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+        Instagram
+      </a>
+    </div>
+  </div>
 
   <!-- ════════ MARQUEE ════════ -->
 
@@ -1094,8 +1340,11 @@
     <p class="footer-left">© 2026 SOMTRX</p>
     <div class="footer-mid">S.</div>
     <div class="footer-right">
-      <a href="https://www.instagram.com/somtrx/" class="hoverable">Instagram</a>
-      <a href="https://unlearnlove.com" class="hoverable">Unlearn Love</a>
+      <a href="https://www.youtube.com/@somtrx" class="hoverable" target="_blank" rel="noopener">YouTube</a>
+      <a href="https://x.com/somtrx" class="hoverable" target="_blank" rel="noopener">X</a>
+      <a href="https://medium.com/@somtrx" class="hoverable" target="_blank" rel="noopener">Medium</a>
+      <a href="https://www.instagram.com/somtrx/" class="hoverable" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://unlearnlove.com" class="hoverable" target="_blank" rel="noopener">Unlearn Love</a>
     </div>
   </footer>
 
@@ -1105,6 +1354,22 @@
 
   <script>
   (() => {
+
+    /* ─── Hamburger Nav ─── */
+    const hamburger = document.getElementById('hamburger');
+    const mobilePanel = document.getElementById('mobile-panel');
+    hamburger?.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      mobilePanel.classList.toggle('open');
+      document.body.style.overflow = mobilePanel.classList.contains('open') ? 'hidden' : '';
+    });
+    document.querySelectorAll('.mobile-nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove('open');
+        mobilePanel.classList.remove('open');
+        document.body.style.overflow = '';
+      });
+    });
 
     /* ─── Custom Cursor ─── */
     const dot = document.getElementById('cursor-dot');
