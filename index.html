@@ -284,13 +284,14 @@
     .hero-title {
       font-family: 'Playfair Display', serif;
       font-weight: 900;
-      font-size: clamp(4.5rem,13vw,11rem);
+      font-size: clamp(4.5rem, 9.5vw, 9.5rem);
       line-height: 0.9;
       text-transform: uppercase;
       letter-spacing: -4px;
       position: relative;
       z-index: 1;
       overflow: hidden;
+      max-width: 100%;
     }
     .hero-title .line { display: block; overflow: hidden; }
     .hero-title .line span {
@@ -1063,6 +1064,154 @@
       .nav-links .hide-mobile { display: none; }
       .articles-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
     }
+    /* ══════════════════════════════════════════
+       CONTACT MODAL
+    ══════════════════════════════════════════ */
+    .contact-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(8,8,8,0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      z-index: 11000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s var(--ease);
+    }
+    .contact-modal-backdrop.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .contact-modal {
+      position: relative;
+      border: 1px solid var(--low);
+      background: var(--bg2);
+      padding: 4rem;
+      max-width: 520px;
+      width: 90%;
+      transform: translateY(24px);
+      transition: transform 0.5s var(--ease);
+    }
+    .contact-modal-backdrop.open .contact-modal {
+      transform: translateY(0);
+    }
+    .contact-modal-tag {
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--accent);
+      opacity: 0.7;
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+    .contact-modal h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -2px;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+    .contact-modal h2 em { font-style: italic; color: var(--accent); }
+    .contact-modal-sub {
+      color: var(--muted);
+      font-size: 0.85rem;
+      line-height: 1.8;
+      margin-bottom: 2.5rem;
+    }
+    .contact-email-row {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      border: 1px solid rgba(201,168,76,0.3);
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+    }
+    .contact-email-display {
+      flex: 1;
+      padding: 1rem 1.25rem;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--text);
+      background: transparent;
+      border: none;
+      font-family: 'Syne', sans-serif;
+      user-select: all;
+      cursor: text;
+      min-width: 0;
+    }
+    .contact-copy-btn {
+      padding: 1rem 1.25rem;
+      background: none;
+      border: none;
+      border-left: 1px solid rgba(201,168,76,0.3);
+      color: var(--accent);
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      font-family: 'Syne', sans-serif;
+      transition: background 0.3s, color 0.3s;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .contact-copy-btn:hover { background: var(--accent); color: var(--bg); }
+    .contact-copy-btn.copied { background: rgba(201,168,76,0.15); color: var(--accent); }
+    .contact-mailto {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .contact-mailto:hover { color: var(--accent); }
+    .contact-mailto::after { content: '→'; }
+    .contact-modal-close {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      background: none;
+      border: 1px solid var(--low);
+      color: var(--muted);
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: border-color 0.3s, color 0.3s;
+      font-family: 'Syne', sans-serif;
+      line-height: 1;
+    }
+    .contact-modal-close:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* Corner accent lines */
+    .contact-modal::before,
+    .contact-modal::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border-color: var(--accent);
+      border-style: solid;
+      opacity: 0.4;
+    }
+    .contact-modal::before { top: -1px; left: -1px; border-width: 1px 0 0 1px; }
+    .contact-modal::after  { bottom: -1px; right: -1px; border-width: 0 1px 1px 0; }
+
   </style>
 
 </head>
@@ -1094,7 +1243,7 @@
       <a href="#philosophy" class="hide-mobile">Systems</a>
       <a href="#projects" class="hide-mobile">Work</a>
       <a href="/articles/">Archive</a>
-      <a href="https://www.instagram.com/somtrx/" class="nav-cta">Contact</a>
+      <button class="nav-cta" id="contact-btn" style="background:none;cursor:none;font-family:'Syne',sans-serif;">Contact</button>
     </div>
     <button class="nav-hamburger hoverable" id="hamburger" aria-label="Menu">
       <span></span><span></span><span></span>
@@ -1106,7 +1255,7 @@
     <a href="#philosophy" class="mobile-nav-link">Systems</a>
     <a href="#projects" class="mobile-nav-link">Work</a>
     <a href="/articles/" class="mobile-nav-link">Archive</a>
-    <a href="https://www.instagram.com/somtrx/" class="mobile-nav-link">Contact</a>
+    <button class="mobile-nav-link" id="mobile-contact-btn" style="background:none;border:none;font-family:'Playfair Display',serif;font-size:clamp(2.2rem,8vw,3.5rem);font-weight:900;color:var(--text);letter-spacing:-1px;text-transform:uppercase;cursor:pointer;transition:color 0.3s;">Contact</button>
     <div class="nav-mobile-socials">
       <a href="https://www.youtube.com/@somtrx" target="_blank" rel="noopener">YouTube</a>
       <a href="https://x.com/somtrx" target="_blank" rel="noopener">X</a>
@@ -1355,6 +1504,41 @@
   <script>
   (() => {
 
+    /* ─── Contact Modal ─── */
+    const contactBtn = document.getElementById('contact-btn');
+    const contactModal = document.getElementById('contact-modal');
+    const modalClose = document.getElementById('modal-close');
+    const copyBtn = document.getElementById('copy-btn');
+
+    function openModal() {
+      contactModal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal() {
+      contactModal.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    contactBtn?.addEventListener('click', openModal);
+    modalClose?.addEventListener('click', closeModal);
+    contactModal?.addEventListener('click', e => {
+      if (e.target === contactModal) closeModal();
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    copyBtn?.addEventListener('click', () => {
+      navigator.clipboard.writeText('somatrixofficial@gmail.com').then(() => {
+        copyBtn.textContent = 'Copied!';
+        copyBtn.classList.add('copied');
+        setTimeout(() => {
+          copyBtn.textContent = 'Copy';
+          copyBtn.classList.remove('copied');
+        }, 2000);
+      });
+    });
+
     /* ─── Hamburger Nav ─── */
     const hamburger = document.getElementById('hamburger');
     const mobilePanel = document.getElementById('mobile-panel');
@@ -1369,6 +1553,14 @@
         mobilePanel.classList.remove('open');
         document.body.style.overflow = '';
       });
+    });
+
+    const mobileContactBtn = document.getElementById('mobile-contact-btn');
+    mobileContactBtn?.addEventListener('click', () => {
+      hamburger.classList.remove('open');
+      mobilePanel.classList.remove('open');
+      document.body.style.overflow = '';
+      setTimeout(openModal, 100);
     });
 
     /* ─── Custom Cursor ─── */
@@ -1538,6 +1730,21 @@
 
   })();
   </script>
+
+  <!-- ════════ CONTACT MODAL ════════ -->
+  <div class="contact-modal-backdrop" id="contact-modal">
+    <div class="contact-modal" role="dialog" aria-modal="true" aria-label="Contact">
+      <button class="contact-modal-close hoverable" id="modal-close" aria-label="Close">✕</button>
+      <span class="contact-modal-tag">Direct Line</span>
+      <h2>Let's<br><em>Connect.</em></h2>
+      <p class="contact-modal-sub">For collaborations, consulting, or anything you want to decode together — reach out directly.</p>
+      <div class="contact-email-row">
+        <input class="contact-email-display" type="text" value="somatrixofficial@gmail.com" readonly aria-label="Email address">
+        <button class="contact-copy-btn hoverable" id="copy-btn">Copy</button>
+      </div>
+      <a href="mailto:somatrixofficial@gmail.com" class="contact-mailto hoverable">Open in mail</a>
+    </div>
+  </div>
 
 </body>
 </html>
