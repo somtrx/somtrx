@@ -1341,6 +1341,364 @@
     .contact-modal::before { top: -1px; left: -1px; border-width: 1px 0 0 1px; }
     .contact-modal::after  { bottom: -1px; right: -1px; border-width: 0 1px 1px 0; }
 
+    /* ══════════════════════════════════════════
+       BACK TO TOP
+    ══════════════════════════════════════════ */
+    #back-to-top {
+      position: fixed;
+      bottom: 2.5rem;
+      right: 2.5rem;
+      width: 42px;
+      height: 42px;
+      border: 1px solid rgba(201,168,76,0.25);
+      background: rgba(8,8,8,0.92);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: none;
+      z-index: 5000;
+      opacity: 0;
+      transform: translateY(12px);
+      pointer-events: none;
+      transition: opacity 0.4s var(--ease), transform 0.4s var(--ease), border-color 0.3s, background 0.3s;
+      font-size: 1rem;
+    }
+    #back-to-top.visible { opacity: 1; transform: translateY(0); pointer-events: all; }
+    #back-to-top:hover { border-color: var(--accent); background: rgba(201,168,76,0.08); }
+    @media (max-width: 768px) { #back-to-top { display: none; } }
+
+    /* ══════════════════════════════════════════
+       NAV ACTIVE STATE (ScrollSpy)
+    ══════════════════════════════════════════ */
+    .nav-links a.nav-active { opacity: 1 !important; color: var(--accent) !important; }
+
+    /* ══════════════════════════════════════════
+       GAMES SECTION
+    ══════════════════════════════════════════ */
+    .games-section {
+      padding: 8rem 3rem 10rem;
+      border-bottom: 1px solid var(--low);
+    }
+    .games-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 4rem;
+    }
+    .games-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem,4vw,3.5rem);
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -2px;
+      text-transform: uppercase;
+    }
+    .games-sub {
+      max-width: 340px;
+      color: var(--muted);
+      font-size: 0.85rem;
+      line-height: 1.8;
+      text-align: right;
+    }
+    .games-tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--low);
+    }
+    .game-tab {
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      padding: 1rem 2rem;
+      font-family: 'Syne', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--muted);
+      cursor: none;
+      transition: color 0.3s, border-color 0.3s;
+    }
+    .game-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+    .game-tab:hover:not(.active) { color: var(--text); }
+    .games-arena {
+      min-height: 500px;
+      border: 1px solid var(--low);
+      border-top: none;
+      overflow: hidden;
+    }
+    .game-panel { display: none; width: 100%; min-height: 500px; }
+    .game-panel.active { display: flex; }
+
+    /* ─── Shared game UI ─── */
+    .game-start-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem,5vw,3.2rem);
+      font-weight: 900;
+      letter-spacing: -1px;
+      text-transform: uppercase;
+      line-height: 1.05;
+      margin-bottom: 0.75rem;
+    }
+    .game-start-title em { font-style: italic; color: var(--accent); }
+    .game-desc {
+      color: var(--muted);
+      font-size: 0.85rem;
+      line-height: 1.8;
+      max-width: 380px;
+      text-align: center;
+    }
+    .game-btn {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.9rem 2.5rem;
+      border: 1px solid var(--accent);
+      background: none;
+      font-family: 'Syne', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+      cursor: none;
+      transition: color 0.3s var(--ease);
+      position: relative;
+      overflow: hidden;
+      margin-top: 0.75rem;
+    }
+    .game-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.35s var(--ease);
+    }
+    .game-btn:hover::before { transform: scaleX(1); transform-origin: left; }
+    .game-btn:hover { color: var(--bg); }
+    .game-btn span { position: relative; z-index: 1; }
+    .game-result-score {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(4rem,12vw,7rem);
+      font-weight: 900;
+      color: var(--accent);
+      line-height: 1;
+      letter-spacing: -4px;
+    }
+    .game-result-label {
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 0.25rem;
+    }
+    .game-result-insight {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.8;
+      max-width: 400px;
+      text-align: center;
+      padding: 1.25rem 1.5rem;
+      border: 1px solid var(--low);
+      font-style: italic;
+      margin-top: 0.5rem;
+    }
+    .game-hud {
+      display: flex;
+      gap: 3rem;
+    }
+    .game-hud-item { text-align: center; }
+    .game-hud-val {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: var(--accent);
+      line-height: 1;
+      display: block;
+    }
+    .game-hud-key {
+      font-size: 0.6rem;
+      font-weight: 800;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: block;
+      margin-top: 0.3rem;
+    }
+
+    /* ─── Stroop ─── */
+    #game-stroop {
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem;
+      gap: 2rem;
+      text-align: center;
+    }
+    .stroop-state { display: none; flex-direction: column; align-items: center; gap: 1.75rem; }
+    .stroop-state.visible { display: flex; }
+    .stroop-word {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 10vw, 5.5rem);
+      font-weight: 900;
+      letter-spacing: -3px;
+      text-transform: uppercase;
+      line-height: 1;
+      min-height: 1.1em;
+      transition: opacity 0.1s;
+    }
+    .stroop-instruction {
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .stroop-buttons { display: flex; gap: 0.85rem; flex-wrap: wrap; justify-content: center; }
+    .stroop-btn {
+      width: 96px;
+      height: 42px;
+      border: 1px solid;
+      background: none;
+      font-family: 'Syne', sans-serif;
+      font-size: 0.67rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: none;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    }
+    .stroop-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
+    .stroop-btn.correct { background: rgba(100,200,100,0.15) !important; border-color: #6dc473 !important; }
+    .stroop-btn.wrong   { background: rgba(200,80,80,0.15) !important; border-color: #c45c5c !important; }
+
+    /* ─── Reaction Time ─── */
+    #game-reaction { flex-direction: column; }
+    .reaction-arena {
+      flex: 1;
+      min-height: 500px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.25rem;
+      cursor: none;
+      transition: background 0.12s;
+      padding: 3rem;
+      text-align: center;
+    }
+    .reaction-arena.r-idle    { background: var(--bg2); }
+    .reaction-arena.r-wait    { background: var(--bg2); }
+    .reaction-arena.r-go      { background: rgba(201,168,76,0.14); }
+    .reaction-arena.r-toosoon { background: rgba(200,80,80,0.08); }
+    .reaction-arena.r-result  { background: var(--bg2); }
+    .reaction-status {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem,8vw,5rem);
+      font-weight: 900;
+      letter-spacing: -2px;
+      text-transform: uppercase;
+      line-height: 1;
+    }
+    .reaction-sub {
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .reaction-ms {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3.5rem,10vw,6rem);
+      font-weight: 900;
+      color: var(--accent);
+      letter-spacing: -3px;
+      line-height: 1;
+    }
+    .reaction-rounds-row { display: flex; gap: 2rem; flex-wrap: wrap; justify-content: center; }
+    .reaction-stat { text-align: center; }
+    .reaction-stat span:first-child {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: var(--accent);
+      display: block;
+      line-height: 1;
+    }
+    .reaction-stat span:last-child {
+      font-size: 0.58rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: block;
+      margin-top: 0.2rem;
+    }
+
+    /* ─── Memory Matrix ─── */
+    #game-memory {
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem;
+      gap: 2rem;
+      text-align: center;
+    }
+    .memory-state { display: none; flex-direction: column; align-items: center; gap: 2rem; }
+    .memory-state.visible { display: flex; }
+    .memory-phase-label {
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--accent);
+      opacity: 0.7;
+    }
+    .memory-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 62px);
+      grid-template-rows: repeat(4, 62px);
+      gap: 6px;
+    }
+    .memory-cell {
+      width: 62px;
+      height: 62px;
+      border: 1px solid var(--low);
+      background: var(--bg2);
+      cursor: none;
+      transition: background 0.18s, border-color 0.18s, transform 0.12s, box-shadow 0.18s;
+    }
+    .memory-cell:hover:not(.cell-disabled) { transform: scale(1.06); border-color: rgba(201,168,76,0.4); }
+    .memory-cell.lit      { background: var(--accent); border-color: var(--accent); box-shadow: 0 0 18px rgba(201,168,76,0.45); }
+    .memory-cell.selected { background: rgba(201,168,76,0.18); border-color: var(--accent); }
+    .memory-cell.correct  { background: rgba(100,200,100,0.25); border-color: #6dc473; }
+    .memory-cell.wrong    { background: rgba(200,80,80,0.2); border-color: #c45c5c; }
+    .memory-cell.missed   { background: rgba(201,168,76,0.08); border-color: rgba(201,168,76,0.4); }
+    .memory-cell.cell-disabled { cursor: not-allowed; }
+
+    /* Responsive games */
+    @media (max-width: 768px) {
+      .games-section { padding: 6rem 1.5rem 7rem; }
+      .games-header { flex-direction: column; align-items: flex-start; gap: 1.25rem; }
+      .games-sub { text-align: left; max-width: 100%; }
+      .game-tab { padding: 0.85rem 1rem; font-size: 0.6rem; letter-spacing: 2px; }
+      .memory-grid { grid-template-columns: repeat(4,54px); grid-template-rows: repeat(4,54px); }
+      .memory-cell { width: 54px; height: 54px; }
+      .game-hud { gap: 2rem; }
+      .reaction-rounds-row { gap: 1rem; }
+    }
+    @media (max-width: 420px) {
+      .memory-grid { grid-template-columns: repeat(4,44px); grid-template-rows: repeat(4,44px); }
+      .memory-cell { width: 44px; height: 44px; }
+      .stroop-btn { width: 78px; }
+    }
+
   </style>
 
 </head>
@@ -1371,6 +1729,7 @@
     <div class="nav-links">
       <a href="#philosophy" class="hide-mobile">Systems</a>
       <a href="#projects" class="hide-mobile">Work</a>
+      <a href="#games" class="hide-mobile">Mind Lab</a>
       <a href="#about" class="hide-mobile">About</a>
       <a href="/articles/">Archive</a>
       <button class="nav-cta" id="contact-btn" style="background:none;cursor:none;font-family:'Syne',sans-serif;">Contact</button>
@@ -1384,6 +1743,7 @@
   <div class="nav-mobile-panel" id="mobile-panel">
     <a href="#philosophy" class="mobile-nav-link">Systems</a>
     <a href="#projects" class="mobile-nav-link">Work</a>
+    <a href="#games" class="mobile-nav-link">Mind Lab</a>
     <a href="#about" class="mobile-nav-link">About</a>
     <a href="/articles/" class="mobile-nav-link">Archive</a>
     <button class="mobile-nav-link" id="mobile-contact-btn" style="background:none;border:none;font-family:'Playfair Display',serif;font-size:clamp(2.2rem,8vw,3.5rem);font-weight:900;color:var(--text);letter-spacing:-1px;text-transform:uppercase;cursor:pointer;transition:color 0.3s;">Contact</button>
@@ -1649,6 +2009,133 @@
     </div>
   </section>
 
+  <!-- ════════ GAMES ════════ -->
+
+  <section class="games-section" id="games">
+
+    <div class="games-header reveal">
+      <div>
+        <span class="s-label">Mind Lab</span>
+        <h2>Test Your<br><em>Brain.</em></h2>
+      </div>
+      <p class="games-sub">Three psychology-rooted experiments. Simple mechanics, real cognitive insights.</p>
+    </div>
+
+    <div class="games-tabs">
+      <button class="game-tab active hoverable" data-game="stroop">01 — Stroop Test</button>
+      <button class="game-tab hoverable" data-game="reaction">02 — Reaction Time</button>
+      <button class="game-tab hoverable" data-game="memory">03 — Memory Matrix</button>
+    </div>
+
+    <div class="games-arena">
+
+      <!-- ─── STROOP TEST ─── -->
+      <div class="game-panel active" id="game-stroop">
+
+        <div class="stroop-state visible" id="stroop-start">
+          <h3 class="game-start-title">The <em>Stroop</em><br>Test</h3>
+          <p class="game-desc">Click the <strong style="color:var(--accent)">ink color</strong> — not the word. Your brain wants to read. Override it.</p>
+          <p class="game-desc" style="font-size:0.72rem;opacity:0.55;">30 seconds · 4 colors · Classic cognitive interference</p>
+          <button class="game-btn hoverable" id="stroop-start-btn"><span>Begin Test</span></button>
+        </div>
+
+        <div class="stroop-state" id="stroop-playing">
+          <div class="game-hud">
+            <div class="game-hud-item"><span class="game-hud-val" id="stroop-score">0</span><span class="game-hud-key">Score</span></div>
+            <div class="game-hud-item"><span class="game-hud-val" id="stroop-time">30</span><span class="game-hud-key">Seconds</span></div>
+            <div class="game-hud-item"><span class="game-hud-val" id="stroop-streak">0</span><span class="game-hud-key">Streak</span></div>
+          </div>
+          <div class="stroop-word" id="stroop-word"></div>
+          <p class="stroop-instruction">Click the ink color</p>
+          <div class="stroop-buttons" id="stroop-buttons"></div>
+        </div>
+
+        <div class="stroop-state" id="stroop-result">
+          <p class="game-result-label">Your Score</p>
+          <div class="game-result-score" id="stroop-final-score">0</div>
+          <p class="game-result-label">correct in 30 seconds</p>
+          <div class="game-result-insight" id="stroop-insight"></div>
+          <button class="game-btn hoverable" id="stroop-retry-btn"><span>Try Again</span></button>
+        </div>
+
+      </div>
+
+      <!-- ─── REACTION TIME ─── -->
+      <div class="game-panel" id="game-reaction">
+        <div class="reaction-arena r-idle" id="reaction-arena">
+
+          <div id="rc-start">
+            <h3 class="game-start-title" style="margin-bottom:0.75rem;">Neural<br><em>Response</em></h3>
+            <p class="game-desc">Click the instant the screen turns gold.<br>Measures the gap between stimulus and response.</p>
+            <p class="game-desc" style="font-size:0.72rem;opacity:0.55;margin-top:0.25rem;">5 rounds · Average result · Reaction time science</p>
+            <button class="game-btn hoverable" id="reaction-start-btn" style="margin-top:1rem;"><span>Start</span></button>
+          </div>
+
+          <div id="rc-wait" style="display:none;flex-direction:column;align-items:center;gap:1rem;">
+            <div class="reaction-status" style="color:var(--muted)">Wait…</div>
+            <p class="reaction-sub">Don't click yet</p>
+          </div>
+
+          <div id="rc-go" style="display:none;flex-direction:column;align-items:center;gap:1rem;">
+            <div class="reaction-status" style="color:var(--accent)">NOW!</div>
+            <p class="reaction-sub">Click!</p>
+          </div>
+
+          <div id="rc-toosoon" style="display:none;flex-direction:column;align-items:center;gap:1.25rem;">
+            <div class="reaction-status" style="color:#c45c5c">Too Early</div>
+            <p class="reaction-sub">Wait for the gold flash</p>
+            <button class="game-btn hoverable" id="reaction-retry-early"><span>Retry Round</span></button>
+          </div>
+
+          <div id="rc-result" style="display:none;flex-direction:column;align-items:center;gap:1rem;">
+            <p class="game-result-label">Round <span id="r-round-num">1</span> of 5</p>
+            <div class="reaction-ms" id="r-ms">—</div>
+            <p class="game-desc" id="r-round-label" style="margin:0;font-size:0.78rem;"></p>
+            <button class="game-btn hoverable" id="reaction-next-btn"><span>Next Round</span></button>
+          </div>
+
+          <div id="rc-final" style="display:none;flex-direction:column;align-items:center;gap:1.5rem;">
+            <p class="game-result-label">Average Reaction Time</p>
+            <div class="game-result-score" id="r-final-avg">—</div>
+            <div class="reaction-rounds-row" id="r-rounds-row"></div>
+            <div class="game-result-insight" id="r-insight"></div>
+            <button class="game-btn hoverable" id="reaction-again-btn"><span>Play Again</span></button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ─── MEMORY MATRIX ─── -->
+      <div class="game-panel" id="game-memory">
+
+        <div class="memory-state visible" id="memory-start">
+          <h3 class="game-start-title">Memory<br><em>Matrix</em></h3>
+          <p class="game-desc">A pattern will flash briefly. Reproduce it from memory. How far can you go?</p>
+          <p class="game-desc" style="font-size:0.72rem;opacity:0.55;">Progressive difficulty · Tests working memory capacity</p>
+          <button class="game-btn hoverable" id="memory-start-btn"><span>Start</span></button>
+        </div>
+
+        <div class="memory-state" id="memory-playing">
+          <div class="game-hud">
+            <div class="game-hud-item"><span class="game-hud-val" id="m-level">1</span><span class="game-hud-key">Level</span></div>
+            <div class="game-hud-item"><span class="game-hud-val" id="m-cells">3</span><span class="game-hud-key">Cells</span></div>
+          </div>
+          <p class="memory-phase-label" id="m-phase-label">Memorise the pattern…</p>
+          <div class="memory-grid" id="memory-grid"></div>
+        </div>
+
+        <div class="memory-state" id="memory-result">
+          <p class="game-result-label">You reached level</p>
+          <div class="game-result-score" id="m-final-level">0</div>
+          <div class="game-result-insight" id="m-insight"></div>
+          <button class="game-btn hoverable" id="memory-retry-btn"><span>Play Again</span></button>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
   <!-- ════════ CTA ════════ -->
 
   <section class="cta-section reveal">
@@ -1659,6 +2146,9 @@
       <a href="/articles/" class="btn-magnetic hoverable"><span>Access Archive</span></a>
     </div>
   </section>
+
+  <!-- Back to Top -->
+  <button id="back-to-top" class="hoverable" aria-label="Back to top">↑</button>
 
   <!-- ════════ FOOTER ════════ -->
 
@@ -1919,6 +2409,329 @@
       });
     }, { threshold: 0.5 });
     document.querySelectorAll('.counter').forEach(el => counterObserver.observe(el));
+
+    /* ─── Back to Top ─── */
+    const backToTopBtn = document.getElementById('back-to-top');
+    window.addEventListener('scroll', () => {
+      backToTopBtn.classList.toggle('visible', window.scrollY > 700);
+    }, { passive: true });
+    backToTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+    /* ─── ScrollSpy ─── */
+    const spySections = ['philosophy','projects','games','about','articles'];
+    const spyLinks = document.querySelectorAll('.nav-links a');
+    const spyObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          spyLinks.forEach(link => {
+            link.classList.remove('nav-active');
+            if (link.getAttribute('href') === '#' + entry.target.id) link.classList.add('nav-active');
+          });
+        }
+      });
+    }, { threshold: 0.25 });
+    spySections.forEach(id => { const el = document.getElementById(id); if (el) spyObserver.observe(el); });
+
+    /* ─── Game Tabs ─── */
+    document.querySelectorAll('.game-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.game-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.game-panel').forEach(p => p.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById('game-' + tab.dataset.game).classList.add('active');
+      });
+    });
+
+    /* ══════════════════════════════════════════
+       STROOP GAME
+    ══════════════════════════════════════════ */
+    const STROOP_COLORS = [
+      { name:'RED',   hex:'#e05555' },
+      { name:'BLUE',  hex:'#5580e0' },
+      { name:'GREEN', hex:'#55b87a' },
+      { name:'GOLD',  hex:'#C9A84C' },
+    ];
+    let sScore=0, sStreak=0, sTimer=null, sTimeLeft=30, sCurrentInk='';
+
+    function showStroopState(id) {
+      document.querySelectorAll('.stroop-state').forEach(s => s.classList.remove('visible'));
+      document.getElementById(id).classList.add('visible');
+    }
+
+    function nextStroopWord() {
+      const word = STROOP_COLORS[Math.floor(Math.random() * 4)];
+      const ink  = STROOP_COLORS[Math.floor(Math.random() * 4)];
+      sCurrentInk = ink.name;
+      const el = document.getElementById('stroop-word');
+      el.textContent = word.name;
+      el.style.color = ink.hex;
+    }
+
+    function buildStroopBtns() {
+      const c = document.getElementById('stroop-buttons');
+      c.innerHTML = '';
+      STROOP_COLORS.forEach(col => {
+        const b = document.createElement('button');
+        b.className = 'stroop-btn hoverable';
+        b.textContent = col.name;
+        b.style.color = col.hex;
+        b.style.borderColor = col.hex + '66';
+        b.dataset.col = col.name;
+        b.addEventListener('click', onStroopClick);
+        c.appendChild(b);
+        // cursor hover
+        b.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+        b.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+      });
+    }
+
+    function onStroopClick(e) {
+      const clicked = e.currentTarget.dataset.col;
+      const btns = document.querySelectorAll('.stroop-btn');
+      if (clicked === sCurrentInk) {
+        sScore++; sStreak++;
+        e.currentTarget.classList.add('correct');
+      } else {
+        sStreak = 0;
+        e.currentTarget.classList.add('wrong');
+        btns.forEach(b => { if (b.dataset.col === sCurrentInk) b.classList.add('correct'); });
+      }
+      document.getElementById('stroop-score').textContent = sScore;
+      document.getElementById('stroop-streak').textContent = sStreak;
+      setTimeout(() => {
+        btns.forEach(b => b.classList.remove('correct','wrong'));
+        nextStroopWord();
+      }, 220);
+    }
+
+    function startStroop() {
+      sScore=0; sStreak=0; sTimeLeft=30;
+      document.getElementById('stroop-score').textContent = '0';
+      document.getElementById('stroop-time').textContent = '30';
+      document.getElementById('stroop-streak').textContent = '0';
+      buildStroopBtns();
+      nextStroopWord();
+      showStroopState('stroop-playing');
+      clearInterval(sTimer);
+      sTimer = setInterval(() => {
+        sTimeLeft--;
+        document.getElementById('stroop-time').textContent = sTimeLeft;
+        if (sTimeLeft <= 0) { clearInterval(sTimer); endStroop(); }
+      }, 1000);
+    }
+
+    function endStroop() {
+      showStroopState('stroop-result');
+      document.getElementById('stroop-final-score').textContent = sScore;
+      const tiers = [
+        [0,10,  '"The Stroop effect is strong here. The brain\'s reading automaticity is overpowering color perception — exactly as the 1935 study predicted."'],
+        [11,18, '"Moderate interference. Your executive function is working hard to override the dominant reading response."'],
+        [19,25, '"Strong cognitive control. You\'re efficiently suppressing the automatic reading pathway."'],
+        [26,999,'"Exceptional inhibition. Your prefrontal cortex is overriding the reading system at an elite level."'],
+      ];
+      let insight = tiers[1][2];
+      for (const [lo,hi,txt] of tiers) { if (sScore >= lo && sScore <= hi) { insight = txt; break; } }
+      document.getElementById('stroop-insight').textContent = insight;
+    }
+
+    document.getElementById('stroop-start-btn').addEventListener('click', startStroop);
+    document.getElementById('stroop-retry-btn').addEventListener('click', () => showStroopState('stroop-start'));
+
+    /* ══════════════════════════════════════════
+       REACTION TIME GAME
+    ══════════════════════════════════════════ */
+    let rRound=0, rTimes=[], rStart=0, rTO=null, rState='idle';
+
+    function rcShow(id) {
+      ['rc-start','rc-wait','rc-go','rc-toosoon','rc-result','rc-final'].forEach(s => {
+        const el = document.getElementById(s);
+        if (el) el.style.display = 'none';
+      });
+      const el = document.getElementById(id);
+      if (el) el.style.display = 'flex';
+    }
+
+    function setArenaClass(cls) {
+      const a = document.getElementById('reaction-arena');
+      a.className = 'reaction-arena ' + cls;
+    }
+
+    function startReaction() {
+      rRound=0; rTimes=[];
+      nextReactionRound();
+    }
+
+    function nextReactionRound() {
+      rRound++;
+      rState='waiting';
+      setArenaClass('r-wait');
+      rcShow('rc-wait');
+      const delay = 1500 + Math.random() * 3000;
+      rTO = setTimeout(() => {
+        rState='go';
+        setArenaClass('r-go');
+        rcShow('rc-go');
+        rStart = performance.now();
+      }, delay);
+    }
+
+    document.getElementById('reaction-arena').addEventListener('click', () => {
+      if (rState==='idle') return;
+      if (rState==='waiting') {
+        clearTimeout(rTO);
+        rState='toosoon';
+        setArenaClass('r-toosoon');
+        rcShow('rc-toosoon');
+        return;
+      }
+      if (rState==='go') {
+        const ms = Math.round(performance.now() - rStart);
+        rTimes.push(ms);
+        rState='result';
+        setArenaClass('r-result');
+        document.getElementById('r-round-num').textContent = rRound;
+        document.getElementById('r-ms').textContent = ms + 'ms';
+        const labels = [[0,150,'Extraordinary — nearly inhuman response speed.'],[151,200,'Exceptional neural response.'],[201,250,'Well above average.'],[251,300,'Average human reaction time.'],[301,400,'Slightly below average — try relaxing your focus.'],[401,9999,'High latency. Fatigue or distraction may be a factor.']];
+        let lbl = 'Average response.';
+        for (const [lo,hi,t] of labels) { if (ms >= lo && ms <= hi) { lbl=t; break; } }
+        document.getElementById('r-round-label').textContent = lbl;
+        document.getElementById('reaction-next-btn').querySelector('span').textContent = rRound < 5 ? 'Next Round' : 'See Results';
+        rcShow('rc-result');
+      }
+    });
+
+    document.getElementById('reaction-start-btn').addEventListener('click', e => { e.stopPropagation(); rState='idle'; startReaction(); });
+
+    document.getElementById('reaction-next-btn').addEventListener('click', e => {
+      e.stopPropagation();
+      if (rRound < 5) { nextReactionRound(); }
+      else { showFinalReaction(); }
+    });
+
+    document.getElementById('reaction-retry-early').addEventListener('click', e => {
+      e.stopPropagation();
+      rRound--;
+      nextReactionRound();
+    });
+
+    document.getElementById('reaction-again-btn').addEventListener('click', e => {
+      e.stopPropagation();
+      setArenaClass('r-idle');
+      rcShow('rc-start');
+      rState='idle';
+    });
+
+    function showFinalReaction() {
+      const avg = Math.round(rTimes.reduce((a,b)=>a+b,0) / rTimes.length);
+      document.getElementById('r-final-avg').textContent = avg + 'ms';
+      const row = document.getElementById('r-rounds-row');
+      row.innerHTML = rTimes.map((t,i) => `<div class="reaction-stat"><span>${t}ms</span><span>Round ${i+1}</span></div>`).join('');
+      const insights = [[0,180,'"Sub-180ms average suggests exceptional neural efficiency. Professional athletes typically range 150–200ms."'],[181,230,'"Your average places you in the upper tier of human reaction speeds. Most people range 200–300ms."'],[231,280,'"Solid reaction time. The brain typically needs 200–250ms to process a visual stimulus."'],[281,9999,'"Reaction time is trainable. Sleep quality, hydration, and focused attention are the primary variables."']];
+      let ins = insights[2][2];
+      for (const [lo,hi,txt] of insights) { if (avg >= lo && avg <= hi) { ins=txt; break; } }
+      document.getElementById('r-insight').textContent = ins;
+      setArenaClass('r-result');
+      rcShow('rc-final');
+      rState='done';
+    }
+
+    // Initialize reaction panel
+    rcShow('rc-start');
+
+    /* ══════════════════════════════════════════
+       MEMORY MATRIX GAME
+    ══════════════════════════════════════════ */
+    let mLevel=1, mPattern=[], mSelected=[], mPhase='show';
+
+    function showMemoryState(id) {
+      document.querySelectorAll('.memory-state').forEach(s => s.classList.remove('visible'));
+      document.getElementById(id).classList.add('visible');
+    }
+
+    function buildMemoryGrid() {
+      const grid = document.getElementById('memory-grid');
+      grid.innerHTML = '';
+      for (let i=0; i<16; i++) {
+        const cell = document.createElement('div');
+        cell.className = 'memory-cell cell-disabled hoverable';
+        cell.dataset.idx = i;
+        cell.addEventListener('click', onMemoryCellClick);
+        cell.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+        cell.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+        grid.appendChild(cell);
+      }
+    }
+
+    function startMemoryLevel() {
+      const cellCount = Math.min(2 + mLevel, 15);
+      document.getElementById('m-level').textContent = mLevel;
+      document.getElementById('m-cells').textContent = cellCount;
+      document.getElementById('m-phase-label').textContent = 'Memorise the pattern…';
+      mPattern=[]; mSelected=[]; mPhase='show';
+
+      while (mPattern.length < cellCount) {
+        const n = Math.floor(Math.random()*16);
+        if (!mPattern.includes(n)) mPattern.push(n);
+      }
+
+      buildMemoryGrid();
+      showMemoryState('memory-playing');
+
+      // Show pattern
+      mPattern.forEach(idx => {
+        document.querySelector(`.memory-cell[data-idx="${idx}"]`).classList.add('lit');
+      });
+
+      const revealMs = Math.max(800, 1800 - mLevel * 80);
+      setTimeout(() => {
+        document.querySelectorAll('.memory-cell').forEach(c => {
+          c.classList.remove('lit','cell-disabled');
+        });
+        mPhase='input';
+        document.getElementById('m-phase-label').textContent = 'Reproduce the pattern';
+      }, revealMs);
+    }
+
+    function onMemoryCellClick(e) {
+      if (mPhase !== 'input') return;
+      const idx = +e.currentTarget.dataset.idx;
+      if (mSelected.includes(idx)) return;
+      mSelected.push(idx);
+      e.currentTarget.classList.add('selected');
+
+      if (mSelected.length === mPattern.length) {
+        mPhase='done';
+        const correct = mPattern.every(i => mSelected.includes(i));
+        document.querySelectorAll('.memory-cell').forEach(c => {
+          const i = +c.dataset.idx;
+          c.classList.add('cell-disabled');
+          if (mPattern.includes(i) && mSelected.includes(i)) { c.classList.remove('selected'); c.classList.add('correct'); }
+          else if (mSelected.includes(i) && !mPattern.includes(i)) { c.classList.remove('selected'); c.classList.add('wrong'); }
+          else if (mPattern.includes(i)) c.classList.add('missed');
+        });
+        setTimeout(() => {
+          if (correct) { mLevel++; startMemoryLevel(); }
+          else { endMemory(); }
+        }, 900);
+      }
+    }
+
+    function endMemory() {
+      document.getElementById('m-final-level').textContent = mLevel;
+      const tiers = [
+        [1,3,  '"Working memory at baseline. Miller\'s Law states average capacity is 4±1 items — you\'re in the normal range."'],
+        [4,6,  '"Above average working memory. You\'re exceeding Miller\'s Magic Number consistently."'],
+        [7,9,  '"Strong visuospatial recall. You may be employing chunking or spatial encoding strategies intuitively."'],
+        [10,99,'"Exceptional pattern retention. This suggests highly efficient working memory architecture."'],
+      ];
+      let ins = tiers[0][2];
+      for (const [lo,hi,txt] of tiers) { if (mLevel >= lo && mLevel <= hi) { ins=txt; break; } }
+      document.getElementById('m-insight').textContent = ins;
+      showMemoryState('memory-result');
+    }
+
+    document.getElementById('memory-start-btn').addEventListener('click', () => { mLevel=1; startMemoryLevel(); });
+    document.getElementById('memory-retry-btn').addEventListener('click', () => { mLevel=1; showMemoryState('memory-start'); });
 
   })();
   </script>
