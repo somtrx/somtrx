@@ -210,13 +210,13 @@
        HERO
     ══════════════════════════════════════════ */
     .hero {
-      height: 100svh;
+      min-height: 100svh;
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      padding: 0 3rem 5rem;
+      padding: 0 3rem 6rem;
       position: relative;
-      overflow: hidden;
+      overflow-x: hidden;
     }
 
     /* Parallax background word */
@@ -290,8 +290,8 @@
       letter-spacing: -4px;
       position: relative;
       z-index: 1;
-      overflow: hidden;
       max-width: 100%;
+      /* overflow intentionally NOT set here — kept only on .line for the animation mask */
     }
     .hero-title .line { display: block; overflow: hidden; }
     .hero-title .line span {
@@ -1027,7 +1027,7 @@
       .nav-links { display: none; }
       .nav-hamburger { display: flex; }
       .nav-mobile-panel { display: flex; }
-      .hero { padding: 0 1.5rem 4rem; }
+      .hero { padding: 0 1.5rem 5rem; min-height: 100svh; }
       .social-strip { padding: 1rem 1.5rem; gap: 0.75rem; }
       .social-strip-label { display: none; }
       .social-strip-line { display: none; }
@@ -1497,6 +1497,21 @@
     </div>
   </footer>
 
+  <!-- ════════ CONTACT MODAL ════════ -->
+  <div class="contact-modal-backdrop" id="contact-modal">
+    <div class="contact-modal" role="dialog" aria-modal="true" aria-label="Contact">
+      <button class="contact-modal-close hoverable" id="modal-close" aria-label="Close">✕</button>
+      <span class="contact-modal-tag">Direct Line</span>
+      <h2>Let's<br><em>Connect.</em></h2>
+      <p class="contact-modal-sub">For collaborations, consulting, or anything you want to decode together — reach out directly.</p>
+      <div class="contact-email-row">
+        <input class="contact-email-display" type="text" value="somatrixofficial@gmail.com" readonly aria-label="Email address">
+        <button class="contact-copy-btn hoverable" id="copy-btn">Copy</button>
+      </div>
+      <a href="mailto:somatrixofficial@gmail.com" class="contact-mailto hoverable">Open in mail</a>
+    </div>
+  </div>
+
   <!-- ════════════════════════════════════════
        JAVASCRIPT
   ════════════════════════════════════════ -->
@@ -1730,21 +1745,6 @@
 
   })();
   </script>
-
-  <!-- ════════ CONTACT MODAL ════════ -->
-  <div class="contact-modal-backdrop" id="contact-modal">
-    <div class="contact-modal" role="dialog" aria-modal="true" aria-label="Contact">
-      <button class="contact-modal-close hoverable" id="modal-close" aria-label="Close">✕</button>
-      <span class="contact-modal-tag">Direct Line</span>
-      <h2>Let's<br><em>Connect.</em></h2>
-      <p class="contact-modal-sub">For collaborations, consulting, or anything you want to decode together — reach out directly.</p>
-      <div class="contact-email-row">
-        <input class="contact-email-display" type="text" value="somatrixofficial@gmail.com" readonly aria-label="Email address">
-        <button class="contact-copy-btn hoverable" id="copy-btn">Copy</button>
-      </div>
-      <a href="mailto:somatrixofficial@gmail.com" class="contact-mailto hoverable">Open in mail</a>
-    </div>
-  </div>
 
 </body>
 </html>
