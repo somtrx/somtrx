@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SOMA — Ask Anything | SOMTRX</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <meta name="description" content="SOMA is SOMTRX's AI intelligence. Ask anything about psychology, philosophy, mental models, and self-development.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* ══ RESET & BASE ══ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:      #080808;
+      --bg2:     #111111;
+      --bg3:     #161616;
+      --text:    #f0ece6;
+      --muted:   rgba(240,236,230,0.45);
+      --low:     rgba(240,236,230,0.07);
+      --accent:  #C9A84C;
+      --accent2: rgba(201,168,76,0.12);
+      --ease:    cubic-bezier(0.25,0.46,0.45,0.94);
+      --red:     #c45c5c;
+      --green:   #6dc473;
+    }
+    html, body { height: 100%; overflow: hidden; }
+    body {
+      font-family: 'Syne', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+    }
+    button { font-family: inherit; cursor: pointer; }
+    input, textarea { font-family: inherit; }
+    a { text-decoration: none; color: inherit; }
+    strong { color: var(--text); font-weight: 800; }
+    em { font-style: italic; color: rgba(240,236,230,0.8); }
+
+    /* ══ CUSTOM SCROLLBAR ══ */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--low); border-radius: 2px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(201,168,76,0.3); }
+
+    /* ══ LAYOUT ══ */
+    .app {
+      display: grid;
+      grid-template-rows: 56px 1fr;
+      grid-template-columns: 300px 1fr;
+      height: 100vh;
+    }
+
+    /* ══ TOP NAV ══ */
+    .topnav {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      border-bottom: 1px solid var(--low);
+      background: rgba(8,8,8,0.95);
+      backdrop-filter: blur(10px);
+      position: relative;
+      z-index: 100;
+    }
+    .topnav-left { display: flex; align-items: center; gap: 1.5rem; }
+    .topnav-back {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-size: 0.62rem; font-weight: 800;
+      letter-spacing: 3px; text-transform: uppercase;
+      color: var(--muted); transition: color 0.25s;
+    }
+    .topnav-back:hover { color: var(--accent); }
+    .topnav-back svg { width: 14px; height: 14px; }
+    .topnav-divider { width: 1px; height: 20px; background: var(--low); }
+    .topnav-brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem; font-weight: 900;
+      letter-spacing: -0.5px;
+    }
+    .topnav-brand span { color: var(--accent); font-style: italic; }
+    .topnav-right { display: flex; align-items: center; gap: 1rem; }
+    .topnav-model-badge {
+      font-size: 0.58rem; font-weight: 800;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: var(--muted); border: 1px solid var(--low);
+      padding: 0.3rem 0.7rem;
+    }
+    .topnav-settings-btn {
+      background: none; border: 1px solid var(--low);
+      padding: 0.35rem 0.75rem;
+      font-size: 0.6rem; font-weight: 800;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: var(--muted); transition: border-color 0.25s, color 0.25s;
+    }
+    .topnav-settings-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .clear-btn {
+      background: none; border: 1px solid var(--low);
+      padding: 0.35rem 0.75rem;
+      font-size: 0.6rem; font-weight: 800;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: var(--muted); transition: border-color 0.25s, color 0.25s;
+    }
+    .clear-btn:hover { border-color: var(--red); color: var(--red); }
+
+    /* ══ SIDEBAR ══ */
+    .sidebar {
+      grid-row: 2;
+      grid-column: 1;
+      border-right: 1px solid var(--low);
+      display: flex; flex-direction: column;
+      overflow-y: auto; overflow-x: hidden;
+      background: var(--bg2);
+    }
+    .soma-identity {
+      padding: 2.5rem 2rem 2rem;
+      border-bottom: 1px solid var(--low);
+    }
+    .soma-status {
+      display: flex; align-items: center; gap: 0.6rem;
+      margin-bottom: 1.5rem;
+    }
+    .soma-dot {
+      width: 8px; height: 8px;
+      background: var(--green); border-radius: 50%;
+      flex-shrink: 0;
+      box-shadow: 0 0 10px rgba(109,196,115,0.7);
+      animation: status-pulse 2.5s ease-in-out infinite;
+    }
+    @keyframes status-pulse {
+      0%,100% { box-shadow: 0 0 6px rgba(109,196,115,0.5); }
+      50%      { box-shadow: 0 0 14px rgba(109,196,115,0.9); }
+    }
+    .soma-status-label {
+      font-size: 0.6rem; font-weight: 800;
+      letter-spacing: 3px; text-transform: uppercase; color: var(--green);
+    }
+    .soma-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.8rem; font-weight: 900;
+      letter-spacing: -2px; line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+    .soma-name em { font-style: italic; color: var(--accent); }
+    .soma-tagline {
+      font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 1px; color: var(--muted);
+      line-height: 1.6; margin-bottom: 1.5rem;
+    }
+    .soma-domains {
+      display: flex; flex-wrap: wrap; gap: 0.4rem;
+    }
+    .soma-domain {
+      font-size: 0.57rem; font-weight: 800;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--muted); border: 1px solid var(--low);
+      padding: 0.25rem 0.6rem; transition: border-color 0.2s, color 0.2s;
+    }
+    .soma-domain:hover { border-color: rgba(201,168,76,0.3); color: var(--accent); }
+
+    .sidebar-section-label {
+      font-size: 0.58rem; font-weight: 800;
+      letter-spacing: 4px; text-transform: uppercase;
+      color: var(--muted); opacity: 0.5;
+      padding: 1.5rem 2rem 0.75rem;
+    }
+    .prompts-list {
+      padding: 0 1rem 1rem;
+      display: flex; flex-direction: column; gap: 0.4rem;
+    }
+    .prompt-btn {
+      background: none;
+      border: 1px solid var(--low);
+      text-align: left;
+      padding: 0.85rem 1rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--muted);
+      line-height: 1.5;
+      transition: border-color 0.25s, color 0.25s, background 0.25s;
+      position: relative; overflow: hidden;
+    }
+    .prompt-btn::before {
+      content: '';
+      position: absolute; left: 0; top: 0; bottom: 0;
+      width: 2px; background: var(--accent);
+      transform: scaleY(0); transition: transform 0.25s var(--ease);
+    }
+    .prompt-btn:hover {
+      border-color: rgba(201,168,76,0.25);
+      color: var(--text); background: rgba(201,168,76,0.03);
+    }
+    .prompt-btn:hover::before { transform: scaleY(1); }
+
+    .sidebar-footer {
+      margin-top: auto;
+      padding: 1.5rem 2rem;
+      border-top: 1px solid var(--low);
+    }
+    .sidebar-footer-text {
+      font-size: 0.6rem; font-weight: 600;
+      letter-spacing: 1px; color: var(--muted);
+      opacity: 0.4; line-height: 1.6;
+    }
+    .sidebar-footer-text a { color: var(--accent); opacity: 0.8; }
+    .sidebar-footer-text a:hover { opacity: 1; }
+
+    /* ══ CHAT AREA ══ */
+    .chat-area {
+      grid-row: 2;
+      grid-column: 2;
+      display: flex; flex-direction: column;
+      overflow: hidden;
+    }
+    .messages-wrap {
+      flex: 1; overflow-y: auto;
+      padding: 2.5rem 3rem;
+      display: flex; flex-direction: column; gap: 0;
+      scroll-behavior: smooth;
+    }
+
+    /* Empty state */
+    .empty-state {
+      flex: 1;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; gap: 1rem;
+      padding: 3rem;
+      opacity: 0;
+      animation: fade-in 0.6s 0.3s var(--ease) forwards;
+    }
+    @keyframes fade-in {
+      from { opacity:0; transform:translateY(12px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    .empty-icon {
+      width: 64px; height: 64px;
+      border: 1px solid var(--low);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 0.5rem; position: relative;
+    }
+    .empty-icon::before, .empty-icon::after {
+      content: ''; position: absolute;
+      width: 8px; height: 8px;
+      border-style: solid; border-color: var(--accent); opacity: 0.3;
+    }
+    .empty-icon::before { top:-1px; left:-1px; border-width:1px 0 0 1px; }
+    .empty-icon::after  { bottom:-1px; right:-1px; border-width:0 1px 1px 0; }
+    .empty-icon svg { width: 28px; height: 28px; color: var(--accent); opacity: 0.6; }
+    .empty-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.5rem,3vw,2.2rem);
+      font-weight: 900; letter-spacing: -1px;
+      text-transform: uppercase; line-height: 1;
+    }
+    .empty-title em { font-style:italic; color:var(--accent); }
+    .empty-sub {
+      font-size: 0.8rem; color: var(--muted);
+      line-height: 1.7; max-width: 400px;
+    }
+    .empty-prompts {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 0.6rem; margin-top: 1.5rem; width: 100%; max-width: 600px;
+    }
+    .empty-prompt-btn {
+      background: none; border: 1px solid var(--low);
+      padding: 0.85rem 1.1rem; text-align: left;
+      font-size: 0.73rem; font-weight: 600;
+      color: var(--muted); line-height: 1.5;
+      transition: border-color 0.25s, color 0.25s, background 0.25s;
+    }
+    .empty-prompt-btn:hover {
+      border-color: rgba(201,168,76,0.3);
+      color: var(--text); background: rgba(201,168,76,0.04);
+    }
+
+    /* Messages */
+    .msg {
+      display: flex; gap: 1rem;
+      padding: 1.75rem 0;
+      border-bottom: 1px solid var(--low);
+      animation: msg-in 0.35s var(--ease) both;
+    }
+    .msg:last-child { border-bottom: none; }
+    @keyframes msg-in {
+      from { opacity:0; transform:translateY(8px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    .msg-avatar {
+      width: 32px; height: 32px;
+      border: 1px solid var(--low);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 2px;
+      font-size: 0.6rem; font-weight: 900;
+      letter-spacing: 1px;
+    }
+    .msg.user .msg-avatar {
+      background: var(--accent2);
+      border-color: rgba(201,168,76,0.25);
+      color: var(--accent);
+    }
+    .msg.soma .msg-avatar {
+      background: var(--bg3); color: var(--muted);
+    }
+    .msg-body { flex: 1; min-width: 0; }
+    .msg-meta {
+      display: flex; align-items: baseline;
+      gap: 0.75rem; margin-bottom: 0.5rem;
+    }
+    .msg-sender {
+      font-size: 0.65rem; font-weight: 800;
+      letter-spacing: 2px; text-transform: uppercase;
+    }
+    .msg.user .msg-sender { color: var(--accent); }
+    .msg.soma .msg-sender { color: var(--muted); }
+    .msg-time {
+      font-size: 0.58rem; font-weight: 600;
+      color: var(--muted); opacity: 0.4; letter-spacing: 0.5px;
+    }
+    .msg-text {
+      font-size: 0.92rem; line-height: 1.8;
+      color: rgba(240,236,230,0.85);
+      word-break: break-word;
+    }
+    .msg-text p { margin-bottom: 0.75em; }
+    .msg-text p:last-child { margin-bottom: 0; }
+    .msg-text ul, .msg-text ol {
+      padding-left: 1.25rem; margin: 0.5em 0 0.75em;
+    }
+    .msg-text li { margin-bottom: 0.3em; }
+    .msg-text code {
+      background: rgba(201,168,76,0.1);
+      border: 1px solid rgba(201,168,76,0.2);
+      padding: 0.1em 0.4em;
+      font-size: 0.85em; font-family: 'Courier New', monospace;
+      color: var(--accent);
+    }
+    .msg-text blockquote {
+      border-left: 2px solid var(--accent);
+      padding-left: 1rem; margin: 0.75em 0;
+      color: var(--muted); font-style: italic;
+    }
+    .msg-text h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem; font-weight: 900;
+      letter-spacing: -0.5px; margin-bottom: 0.4em;
+    }
+    .msg-text strong { color: var(--text); }
+
+    /* Typing indicator */
+    .typing-indicator {
+      display: flex; gap: 1rem;
+      padding: 1.5rem 0;
+    }
+    .typing-avatar {
+      width: 32px; height: 32px;
+      border: 1px solid var(--low);
+      background: var(--bg3);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 2px;
+      font-size: 0.6rem; font-weight: 900;
+      letter-spacing: 1px; color: var(--muted);
+    }
+    .typing-dots {
+      display: flex; align-items: center; gap: 5px;
+      padding: 0.5rem 0;
+    }
+    .typing-dot {
+      width: 6px; height: 6px;
+      background: var(--accent); border-radius: 50%;
+      opacity: 0.4;
+      animation: dot-bounce 1.4s ease-in-out infinite;
+    }
+    .typing-dot:nth-child(1) { animation-delay: 0s; }
+    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes dot-bounce {
+      0%,60%,100% { opacity:0.3; transform:translateY(0); }
+      30%          { opacity:1;   transform:translateY(-5px); }
+    }
+
+    /* Streaming cursor */
+    .stream-cursor {
+      display: inline-block;
+      width: 2px; height: 1em;
+      background: var(--accent); margin-left: 2px;
+      vertical-align: text-bottom;
+      animation: blink 0.9s step-end infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0;} }
+
+    /* ══ INPUT BAR ══ */
+    .input-bar {
+      border-top: 1px solid var(--low);
+      padding: 1.25rem 3rem 1.5rem;
+      background: var(--bg);
+      position: relative;
+    }
+    .input-bar-inner {
+      display: flex; align-items: flex-end; gap: 1rem;
+      border: 1px solid var(--low);
+      background: var(--bg2);
+      padding: 0.75rem 1rem;
+      transition: border-color 0.3s;
+      position: relative;
+    }
+    .input-bar-inner:focus-within {
+      border-color: rgba(201,168,76,0.3);
+    }
+    .input-bar-inner::before, .input-bar-inner::after {
+      content: ''; position: absolute;
+      width: 12px; height: 12px;
+      border-style: solid; border-color: var(--accent);
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .input-bar-inner::before { top:-1px; left:-1px; border-width:1px 0 0 1px; }
+    .input-bar-inner::after  { bottom:-1px; right:-1px; border-width:0 1px 1px 0; }
+    .input-bar-inner:focus-within::before,
+    .input-bar-inner:focus-within::after { opacity: 0.4; }
+    #chat-input {
+      flex: 1; background: none; border: none; outline: none;
+      font-size: 0.88rem; font-weight: 600;
+      color: var(--text); resize: none;
+      line-height: 1.6; max-height: 160px;
+      overflow-y: auto; padding: 0.15rem 0;
+    }
+    #chat-input::placeholder { color: var(--muted); opacity: 0.4; }
+    #send-btn {
+      width: 38px; height: 38px;
+      background: var(--accent); border: none;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; transition: background 0.25s, transform 0.15s;
+    }
+    #send-btn:hover { background: #d4b360; transform: scale(1.05); }
+    #send-btn:disabled { background: var(--low); opacity: 0.5; cursor: not-allowed; transform: none; }
+    #send-btn svg { width: 16px; height: 16px; color: var(--bg); }
+    .input-hint {
+      font-size: 0.57rem; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--muted); opacity: 0.35;
+      margin-top: 0.6rem; text-align: center;
+    }
+
+    /* ══ API KEY SETUP SCREEN ══ */
+    .setup-screen {
+      position: fixed; inset: 0;
+      background: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 1000;
+      padding: 2rem;
+      opacity: 0;
+      animation: fade-in 0.5s 0.1s var(--ease) forwards;
+    }
+    .setup-box {
+      max-width: 520px; width: 100%;
+      border: 1px solid var(--low);
+      background: var(--bg2);
+      padding: 3.5rem;
+      position: relative;
+      transform: translateY(24px);
+      animation: setup-in 0.6s 0.2s var(--ease) forwards;
+    }
+    @keyframes setup-in {
+      from { opacity:0; transform:translateY(24px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    .setup-box::before, .setup-box::after {
+      content:''; position:absolute;
+      width:18px; height:18px;
+      border-style:solid; border-color:var(--accent); opacity:0.35;
+    }
+    .setup-box::before { top:-1px; left:-1px; border-width:1px 0 0 1px; }
+    .setup-box::after  { bottom:-1px; right:-1px; border-width:0 1px 1px 0; }
+    .setup-tag {
+      font-size: 0.6rem; font-weight: 800;
+      letter-spacing: 4px; text-transform: uppercase;
+      color: var(--accent); display: block; margin-bottom: 1.5rem;
+    }
+    .setup-box h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem,5vw,3rem);
+      font-weight: 900; letter-spacing: -2px;
+      text-transform: uppercase; line-height: 1.05;
+      margin-bottom: 0.75rem;
+    }
+    .setup-box h1 em { font-style:italic; color:var(--accent); }
+    .setup-desc {
+      color: var(--muted); font-size: 0.83rem;
+      line-height: 1.75; margin-bottom: 2.5rem;
+    }
+    .setup-step {
+      display: flex; align-items: flex-start; gap: 1rem;
+      padding: 1rem; border: 1px solid var(--low);
+      margin-bottom: 0.6rem; background: var(--bg3);
+    }
+    .setup-step-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem; font-weight: 900;
+      color: var(--accent); opacity: 0.5; flex-shrink: 0; line-height: 1;
+    }
+    .setup-step-text {
+      font-size: 0.78rem; font-weight: 600;
+      color: var(--muted); line-height: 1.6;
+    }
+    .setup-step-text a {
+      color: var(--accent); border-bottom: 1px solid rgba(201,168,76,0.3);
+      transition: border-color 0.2s;
+    }
+    .setup-step-text a:hover { border-color: var(--accent); }
+    .setup-input-row {
+      display: flex; margin-top: 1.75rem; margin-bottom: 0.6rem;
+      border: 1px solid rgba(201,168,76,0.25); overflow: hidden;
+    }
+    .setup-input-row input {
+      flex: 1; padding: 0.9rem 1.1rem;
+      background: transparent; border: none; outline: none;
+      font-size: 0.85rem; font-weight: 700;
+      letter-spacing: 0.5px; color: var(--text);
+    }
+    .setup-input-row input::placeholder { color: var(--muted); opacity: 0.4; }
+    .setup-submit {
+      padding: 0.9rem 1.5rem;
+      background: var(--accent); border: none;
+      font-family: 'Syne', sans-serif;
+      font-size: 0.68rem; font-weight: 800;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: var(--bg); white-space: nowrap;
+      flex-shrink: 0; transition: background 0.25s;
+    }
+    .setup-submit:hover { background: #d4b360; }
+    .setup-err {
+      font-size: 0.64rem; font-weight: 800;
+      letter-spacing: 1px; color: var(--red);
+      min-height: 1.2em; display: block;
+    }
+    .setup-note {
+      font-size: 0.62rem; font-weight: 600;
+      color: var(--muted); opacity: 0.4;
+      margin-top: 1rem; line-height: 1.6;
+    }
+
+    /* ══ SETTINGS MODAL ══ */
+    .settings-backdrop {
+      position: fixed; inset: 0;
+      background: rgba(4,4,4,0.88);
+      backdrop-filter: blur(12px);
+      z-index: 500;
+      display: flex; align-items: center; justify-content: center;
+      padding: 2rem;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s var(--ease);
+    }
+    .settings-backdrop.open { opacity: 1; pointer-events: all; }
+    .settings-box {
+      max-width: 440px; width: 100%;
+      border: 1px solid var(--low);
+      background: var(--bg2);
+      padding: 2.5rem;
+      position: relative;
+      transform: translateY(20px);
+      transition: transform 0.4s var(--ease);
+    }
+    .settings-backdrop.open .settings-box { transform: translateY(0); }
+    .settings-box::before, .settings-box::after {
+      content:''; position:absolute;
+      width:14px; height:14px;
+      border-style:solid; border-color:var(--accent); opacity:0.3;
+    }
+    .settings-box::before { top:-1px; left:-1px; border-width:1px 0 0 1px; }
+    .settings-box::after  { bottom:-1px; right:-1px; border-width:0 1px 1px 0; }
+    .settings-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem; font-weight: 900;
+      letter-spacing: -1px; text-transform: uppercase;
+      margin-bottom: 1.75rem;
+    }
+    .settings-title em { font-style:italic; color:var(--accent); }
+    .settings-label {
+      font-size: 0.6rem; font-weight: 800;
+      letter-spacing: 3px; text-transform: uppercase;
+      color: var(--muted); display: block; margin-bottom: 0.5rem;
+    }
+    .settings-input-row {
+      display: flex; border: 1px solid var(--low); margin-bottom: 1.25rem;
+    }
+    .settings-input-row input {
+      flex: 1; padding: 0.8rem 1rem;
+      background: transparent; border: none; outline: none;
+      font-size: 0.82rem; font-weight: 700;
+      color: var(--text);
+    }
+    .settings-input-row input::placeholder { color: var(--muted); opacity: 0.4; }
+    .settings-save {
+      width: 100%; padding: 0.85rem;
+      background: var(--accent); border: none;
+      font-family: 'Syne', sans-serif;
+      font-size: 0.7rem; font-weight: 800;
+      letter-spacing: 3px; text-transform: uppercase;
+      color: var(--bg); transition: background 0.25s;
+      margin-bottom: 0.75rem;
+    }
+    .settings-save:hover { background: #d4b360; }
+    .settings-close {
+      width: 100%; padding: 0.75rem;
+      background: none; border: 1px solid var(--low);
+      font-family: 'Syne', sans-serif;
+      font-size: 0.65rem; font-weight: 800;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: var(--muted); transition: border-color 0.25s, color 0.25s;
+    }
+    .settings-close:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ══ ERROR TOAST ══ */
+    .toast {
+      position: fixed; bottom: 2rem; left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--bg3); border: 1px solid var(--red);
+      padding: 0.75rem 1.5rem;
+      font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 1px; color: var(--red);
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s, transform 0.3s;
+      z-index: 9999; white-space: nowrap;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* ══ MOBILE ══ */
+    @media (max-width: 900px) {
+      .app {
+        grid-template-columns: 1fr;
+        grid-template-rows: 56px auto 1fr;
+      }
+      .sidebar {
+        grid-row: 2; grid-column: 1;
+        border-right: none; border-bottom: 1px solid var(--low);
+        max-height: 200px;
+        flex-direction: row; overflow-x: auto; overflow-y: hidden;
+      }
+      .soma-identity {
+        padding: 1.25rem 1.5rem;
+        border-bottom: none; border-right: 1px solid var(--low);
+        min-width: 220px; flex-shrink: 0;
+      }
+      .soma-name { font-size: 1.8rem; }
+      .soma-domains { display: none; }
+      .sidebar-section-label { display: none; }
+      .prompts-list {
+        flex-direction: row; padding: 1rem;
+        overflow-x: auto; white-space: nowrap;
+        flex-wrap: nowrap; min-width: max-content;
+      }
+      .prompt-btn { min-width: 200px; white-space: normal; flex-shrink: 0; }
+      .sidebar-footer { display: none; }
+      .chat-area { grid-row: 3; grid-column: 1; }
+      .messages-wrap { padding: 1.5rem; }
+      .input-bar { padding: 1rem 1.5rem 1.25rem; }
+      .empty-prompts { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) {
+      .topnav { padding: 0 1rem; }
+      .topnav-model-badge { display: none; }
+      .setup-box { padding: 2rem 1.5rem; }
+      .setup-steps { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ════════ SETUP SCREEN ════════ -->
+  <div class="setup-screen" id="setup-screen">
+    <div class="setup-box">
+      <span class="setup-tag">Initial Configuration</span>
+      <h1>Activate<br><em>SOMA.</em></h1>
+      <p class="setup-desc">SOMA runs on Groq's free AI infrastructure — fast, intelligent, and built for depth. You'll need a free Groq API key to get started.</p>
+
+      <div class="setup-steps" id="setup-steps">
+        <div class="setup-step">
+          <span class="setup-step-num">01</span>
+          <p class="setup-step-text">Go to <a href="https://console.groq.com" target="_blank">console.groq.com</a> and create a free account.</p>
+        </div>
+        <div class="setup-step">
+          <span class="setup-step-num">02</span>
+          <p class="setup-step-text">Navigate to <strong>API Keys</strong> and click <strong>Create API Key</strong>.</p>
+        </div>
+        <div class="setup-step">
+          <span class="setup-step-num">03</span>
+          <p class="setup-step-text">Copy the key (starts with <code>gsk_</code>) and paste it below.</p>
+        </div>
+      </div>
+
+      <div class="setup-input-row">
+        <input type="password" id="setup-key-input" placeholder="gsk_••••••••••••••••••••" autocomplete="off" spellcheck="false">
+        <button class="setup-submit" id="setup-submit-btn">Activate</button>
+      </div>
+      <span class="setup-err" id="setup-err"></span>
+      <p class="setup-note">Your key is stored only in your browser's localStorage and never sent anywhere except directly to Groq's servers.</p>
+    </div>
+  </div>
+
+  <!-- ════════ SETTINGS MODAL ════════ -->
+  <div class="settings-backdrop" id="settings-modal">
+    <div class="settings-box">
+      <h2 class="settings-title">API <em>Settings</em></h2>
+      <label class="settings-label">Groq API Key</label>
+      <div class="settings-input-row">
+        <input type="password" id="settings-key-input" placeholder="gsk_••••••••••••••••••••" autocomplete="off">
+      </div>
+      <button class="settings-save" id="settings-save-btn">Save Key</button>
+      <button class="settings-close" id="settings-close-btn">Cancel</button>
+    </div>
+  </div>
+
+  <!-- ════════ TOAST ════════ -->
+  <div class="toast" id="toast"></div>
+
+  <!-- ════════ APP ════════ -->
+  <div class="app" id="app" style="display:none;">
+
+    <!-- Top Nav -->
+    <header class="topnav">
+      <div class="topnav-left">
+        <a href="index.html" class="topnav-back">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+          Back
+        </a>
+        <div class="topnav-divider"></div>
+        <div class="topnav-brand">SOMTRX / <span>SOMA</span></div>
+      </div>
+      <div class="topnav-right">
+        <span class="topnav-model-badge">Llama 3.3 · Groq</span>
+        <button class="clear-btn" id="clear-btn">Clear</button>
+        <button class="topnav-settings-btn" id="open-settings-btn">API Key</button>
+      </div>
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="soma-identity">
+        <div class="soma-status">
+          <div class="soma-dot"></div>
+          <span class="soma-status-label">Online</span>
+        </div>
+        <div class="soma-name">SO<em>MA</em></div>
+        <p class="soma-tagline">Psychology · Philosophy<br>Frameworks · Human Behavior</p>
+        <div class="soma-domains">
+          <span class="soma-domain">Cognitive Science</span>
+          <span class="soma-domain">Stoicism</span>
+          <span class="soma-domain">Mental Models</span>
+          <span class="soma-domain">Behavioral Science</span>
+          <span class="soma-domain">Self-Development</span>
+          <span class="soma-domain">Decision Theory</span>
+        </div>
+      </div>
+
+      <p class="sidebar-section-label">Suggested</p>
+      <div class="prompts-list" id="sidebar-prompts">
+        <!-- Injected by JS -->
+      </div>
+
+      <div class="sidebar-footer">
+        <p class="sidebar-footer-text">
+          SOMA is SOMTRX's embedded intelligence. Built on <a href="https://groq.com" target="_blank">Groq</a> + Llama 3.3.<br>
+          Not a substitute for professional support.
+        </p>
+      </div>
+    </aside>
+
+    <!-- Chat Area -->
+    <main class="chat-area">
+      <div class="messages-wrap" id="messages-wrap">
+        <!-- Empty state shown initially -->
+        <div class="empty-state" id="empty-state">
+          <div class="empty-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 2C6.48 2 2 5.92 2 10.75c0 2.47 1.18 4.7 3.07 6.27L4 21l4.77-1.53C9.77 19.81 10.87 20 12 20c5.52 0 10-3.92 10-8.75S17.52 2 12 2z"/>
+            </svg>
+          </div>
+          <h2 class="empty-title">Ask<br><em>Anything.</em></h2>
+          <p class="empty-sub">SOMA specialises in psychology, philosophy, and the frameworks that explain how humans think, feel, and behave. What's on your mind?</p>
+          <div class="empty-prompts" id="empty-prompts">
+            <!-- Injected by JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Input Bar -->
+      <div class="input-bar">
+        <div class="input-bar-inner">
+          <textarea id="chat-input" rows="1" placeholder="Ask about psychology, philosophy, mental models…" aria-label="Message SOMA"></textarea>
+          <button id="send-btn" aria-label="Send message" disabled>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="22" y1="2" x2="11" y2="13"/>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+            </svg>
+          </button>
+        </div>
+        <p class="input-hint">Enter to send · Shift+Enter for new line</p>
+      </div>
+    </main>
+
+  </div>
+
+  <script>
+    const LS_KEY = 'somtrx_groq_key';
+    const LS_HISTORY = 'somtrx_chat_history';
+
+    const SYSTEM_PROMPT = `You are SOMA — the embedded intelligence of SOMTRX, a psychology and self-improvement platform founded by Soumyakanta Nayak.
+
+Your domain:
+- Psychology & cognitive science (cognitive biases, behavioral patterns, Kahneman's dual-process theory, etc.)
+- Philosophy (Stoicism, existentialism, absurdism, epistemology, Nietzsche, Marcus Aurelius, Frankl, etc.)
+- Mental models & frameworks (first principles, inversion, second-order thinking, the dichotomy of control, etc.)
+- Human behavior: motivation, habit formation, procrastination, identity, social dynamics
+- Self-development: decision-making, productivity systems, confidence, resilience, attention management
+
+Personality: You are precise, intellectually honest, and direct — not a therapist, not a life coach. Think of yourself as a well-read philosopher-psychologist who respects the user's intelligence. You cite specific thinkers and frameworks when they add clarity. You challenge assumptions. You make people think.
+
+Formatting rules:
+- Write in clean paragraphs. Use **bold** for key concepts and thinkers.
+- Use bullet points only for truly list-like information.
+- End with a thought-provoking question or observation when the conversation warrants it.
+- Keep responses focused — depth over length. Aim for 150–350 words unless more is needed.
+
+Scope: Your knowledge and engagement is rooted in psychology, philosophy, behavioral science, and self-development. If asked about something outside this scope, briefly acknowledge it and find the psychological or philosophical angle within it.
+
+Never break character. You are SOMA.`;
+
+    const SUGGESTED_PROMPTS = [
+      "Why do we procrastinate even on things we care about?",
+      "What is cognitive dissonance and how does it shape our beliefs?",
+      "Explain Kahneman's System 1 and System 2 thinking.",
+      "How can Stoicism be applied to modern anxiety?",
+      "What is the Dunning-Kruger effect really about?",
+      "Why is identity so resistant to change?",
+      "What are the best mental models for making hard decisions?",
+      "How do habits actually form at the neurological level?",
+      "What did Frankl mean by 'finding meaning in suffering'?",
+      "Why do people stay in situations they know are bad for them?",
+    ];
+
+    let apiKey = localStorage.getItem(LS_KEY) || '';
+    let conversationHistory = [];
+    let isStreaming = false;
+
+    // ─── Init ───
+    function init() {
+      loadHistory();
+      renderSuggestedPrompts();
+      if (apiKey) {
+        showApp();
+      } else {
+        document.getElementById('setup-screen').style.display = 'flex';
+      }
+    }
+
+    function showApp() {
+      document.getElementById('setup-screen').style.display = 'none';
+      const app = document.getElementById('app');
+      app.style.display = 'grid';
+      app.style.opacity = '0';
+      app.style.transition = 'opacity 0.4s ease';
+      requestAnimationFrame(() => { app.style.opacity = '1'; });
+      if (conversationHistory.length > 0) {
+        document.getElementById('empty-state').style.display = 'none';
+        renderHistory();
+      }
+    }
+
+    // ─── Suggested Prompts ───
+    function renderSuggestedPrompts() {
+      const sidebar = document.getElementById('sidebar-prompts');
+      const empty = document.getElementById('empty-prompts');
+      const pick6 = SUGGESTED_PROMPTS.slice(0, 6);
+      const pick4 = SUGGESTED_PROMPTS.slice(0, 4);
+
+      sidebar.innerHTML = pick6.map(p =>
+        `<button class="prompt-btn" onclick="sendPrompt(this.textContent)">${p}</button>`
+      ).join('');
+
+      empty.innerHTML = pick4.map(p =>
+        `<button class="empty-prompt-btn" onclick="sendPrompt(this.textContent)">${p}</button>`
+      ).join('');
+    }
+
+    function sendPrompt(text) {
+      document.getElementById('chat-input').value = text;
+      sendMessage();
+    }
+
+    // ─── Message History ───
+    function loadHistory() {
+      try {
+        const raw = localStorage.getItem(LS_HISTORY);
+        if (raw) conversationHistory = JSON.parse(raw);
+      } catch { conversationHistory = []; }
+    }
+    function saveHistory() {
+      try {
+        // Keep last 40 messages to avoid localStorage limits
+        const trimmed = conversationHistory.slice(-40);
+        localStorage.setItem(LS_HISTORY, JSON.stringify(trimmed));
+      } catch {}
+    }
+    function clearHistory() {
+      conversationHistory = [];
+      localStorage.removeItem(LS_HISTORY);
+      const wrap = document.getElementById('messages-wrap');
+      // Remove all .msg elements
+      wrap.querySelectorAll('.msg').forEach(el => el.remove());
+      // Show empty state
+      const emptyState = document.getElementById('empty-state');
+      if (emptyState) emptyState.style.display = 'flex';
+    }
+
+    function renderHistory() {
+      conversationHistory.forEach(msg => {
+        if (msg.role === 'user') addMessageToDOM('user', msg.content, false);
+        else if (msg.role === 'assistant') addMessageToDOM('soma', msg.content, false);
+      });
+      scrollToBottom();
+    }
+
+    // ─── Markdown renderer (simple) ───
+    function renderMarkdown(text) {
+      if (!text) return '';
+      let html = text
+        // Escape HTML first
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        // Code blocks
+        .replace(/```[\w]*\n?([\s\S]*?)```/g, '<pre><code>$1</code></pre>')
+        // Inline code
+        .replace(/`([^`]+)`/g, '<code>$1</code>')
+        // Bold
+        .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+        // Italic
+        .replace(/\*([^*]+)\*/g, '<em>$1</em>')
+        // ### Heading
+        .replace(/^###\s+(.+)$/gm, '<h3>$1</h3>')
+        // ## Heading
+        .replace(/^##\s+(.+)$/gm, '<h3>$1</h3>')
+        // Blockquote
+        .replace(/^>\s+(.+)$/gm, '<blockquote>$1</blockquote>')
+        // Bullet lists
+        .replace(/^[-•]\s+(.+)$/gm, '<li>$1</li>')
+        // Numbered lists
+        .replace(/^\d+\.\s+(.+)$/gm, '<li>$1</li>');
+
+      // Wrap consecutive <li> in <ul>
+      html = html.replace(/(<li>.*<\/li>\n?)+/g, match => `<ul>${match}</ul>`);
+
+      // Paragraphs from double newlines
+      html = html.replace(/\n{2,}/g, '</p><p>').replace(/\n/g, '<br>');
+      if (!html.startsWith('<')) html = `<p>${html}</p>`;
+      html = html.replace(/<p><\/p>/g, '');
+
+      return html;
+    }
+
+    // ─── DOM Helpers ───
+    function addMessageToDOM(role, content, animate = true) {
+      const wrap = document.getElementById('messages-wrap');
+      const emptyState = document.getElementById('empty-state');
+      if (emptyState) emptyState.style.display = 'none';
+
+      const now = new Date().toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
+      const msgEl = document.createElement('div');
+      msgEl.className = `msg ${role}`;
+      if (!animate) msgEl.style.animation = 'none';
+
+      const avatarLabel = role === 'user' ? 'YOU' : 'AI';
+      const senderLabel = role === 'user' ? 'You' : 'SOMA';
+
+      msgEl.innerHTML = `
+        <div class="msg-avatar">${avatarLabel}</div>
+        <div class="msg-body">
+          <div class="msg-meta">
+            <span class="msg-sender">${senderLabel}</span>
+            <span class="msg-time">${now}</span>
+          </div>
+          <div class="msg-text">${role === 'user' ? escapeHTML(content) : renderMarkdown(content)}</div>
+        </div>`;
+
+      wrap.appendChild(msgEl);
+      if (animate) scrollToBottom();
+      return msgEl;
+    }
+
+    function addTypingIndicator() {
+      const wrap = document.getElementById('messages-wrap');
+      const el = document.createElement('div');
+      el.className = 'typing-indicator';
+      el.id = 'typing-indicator';
+      el.innerHTML = `
+        <div class="typing-avatar">AI</div>
+        <div class="typing-dots">
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+        </div>`;
+      wrap.appendChild(el);
+      scrollToBottom();
+      return el;
+    }
+
+    function removeTypingIndicator() {
+      document.getElementById('typing-indicator')?.remove();
+    }
+
+    function scrollToBottom() {
+      const wrap = document.getElementById('messages-wrap');
+      wrap.scrollTo({ top: wrap.scrollHeight, behavior: 'smooth' });
+    }
+
+    function escapeHTML(str) {
+      return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+    }
+
+    // ─── Send Message ───
+    async function sendMessage() {
+      if (isStreaming) return;
+      const input = document.getElementById('chat-input');
+      const text = input.value.trim();
+      if (!text) return;
+
+      input.value = '';
+      autoResize(input);
+      document.getElementById('send-btn').disabled = true;
+
+      // Add user message
+      addMessageToDOM('user', text);
+      conversationHistory.push({ role: 'user', content: text });
+      saveHistory();
+
+      // Show typing
+      addTypingIndicator();
+      isStreaming = true;
+
+      try {
+        const messages = [
+          { role: 'user', content: SYSTEM_PROMPT + '\n\n---\n\nNow begin the conversation. Respond to the user below.' },
+          { role: 'assistant', content: "Understood. I'm SOMA — ready to engage. What's on your mind?" },
+          ...conversationHistory
+        ];
+
+        const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${apiKey}`
+          },
+          body: JSON.stringify({
+            model: 'llama-3.3-70b-versatile',
+            messages,
+            max_tokens: 1024,
+            temperature: 0.72,
+            stream: true
+          })
+        });
+
+        if (!response.ok) {
+          const errData = await response.json().catch(() => ({}));
+          throw new Error(errData?.error?.message || `API error ${response.status}`);
+        }
+
+        removeTypingIndicator();
+
+        // Add empty SOMA message for streaming
+        const somaEl = addMessageToDOM('soma', '', true);
+        const textEl = somaEl.querySelector('.msg-text');
+        textEl.innerHTML = '<span class="stream-cursor"></span>';
+
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let fullText = '';
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          const chunk = decoder.decode(value, { stream: true });
+          const lines = chunk.split('\n').filter(l => l.startsWith('data: ') && l !== 'data: [DONE]');
+          for (const line of lines) {
+            try {
+              const json = JSON.parse(line.slice(6));
+              const delta = json.choices?.[0]?.delta?.content || '';
+              if (delta) {
+                fullText += delta;
+                textEl.innerHTML = renderMarkdown(fullText) + '<span class="stream-cursor"></span>';
+                scrollToBottom();
+              }
+            } catch {}
+          }
+        }
+
+        // Finalise
+        textEl.innerHTML = renderMarkdown(fullText);
+        conversationHistory.push({ role: 'assistant', content: fullText });
+        saveHistory();
+
+      } catch (err) {
+        removeTypingIndicator();
+        const errMsg = err.message?.includes('401') || err.message?.includes('invalid_api_key')
+          ? 'Invalid API key. Please update it via the API Key button.'
+          : err.message?.includes('rate_limit')
+          ? 'Rate limit reached. Wait a moment and try again.'
+          : `Error: ${err.message}`;
+        showToast(errMsg);
+        // Remove last user message from history on error
+        if (conversationHistory.at(-1)?.role === 'user') conversationHistory.pop();
+      } finally {
+        isStreaming = false;
+        document.getElementById('send-btn').disabled = input.value.trim() === '';
+      }
+    }
+
+    // ─── Setup Screen ───
+    document.getElementById('setup-submit-btn').addEventListener('click', async () => {
+      const key = document.getElementById('setup-key-input').value.trim();
+      const errEl = document.getElementById('setup-err');
+      if (!key.startsWith('gsk_')) {
+        errEl.textContent = 'API key should start with gsk_';
+        return;
+      }
+      errEl.textContent = 'Verifying…';
+      try {
+        const res = await fetch('https://api.groq.com/openai/v1/models', {
+          headers: { 'Authorization': `Bearer ${key}` }
+        });
+        if (!res.ok) throw new Error('Invalid key');
+        apiKey = key;
+        localStorage.setItem(LS_KEY, key);
+        errEl.textContent = '';
+        showApp();
+      } catch {
+        errEl.textContent = 'Could not verify key. Check it and try again.';
+      }
+    });
+    document.getElementById('setup-key-input').addEventListener('keydown', e => {
+      if (e.key === 'Enter') document.getElementById('setup-submit-btn').click();
+    });
+
+    // ─── Settings Modal ───
+    document.getElementById('open-settings-btn').addEventListener('click', () => {
+      document.getElementById('settings-key-input').value = apiKey;
+      document.getElementById('settings-modal').classList.add('open');
+    });
+    document.getElementById('settings-close-btn').addEventListener('click', () => {
+      document.getElementById('settings-modal').classList.remove('open');
+    });
+    document.getElementById('settings-save-btn').addEventListener('click', () => {
+      const key = document.getElementById('settings-key-input').value.trim();
+      if (!key) return;
+      apiKey = key;
+      localStorage.setItem(LS_KEY, key);
+      document.getElementById('settings-modal').classList.remove('open');
+      showToast('API key updated.', true);
+    });
+    document.getElementById('settings-modal').addEventListener('click', e => {
+      if (e.target === document.getElementById('settings-modal'))
+        document.getElementById('settings-modal').classList.remove('open');
+    });
+
+    // ─── Clear ───
+    document.getElementById('clear-btn').addEventListener('click', () => {
+      if (!confirm('Clear this conversation?')) return;
+      clearHistory();
+    });
+
+    // ─── Input ───
+    const inputEl = document.getElementById('chat-input');
+    const sendBtn = document.getElementById('send-btn');
+
+    inputEl.addEventListener('input', () => {
+      autoResize(inputEl);
+      sendBtn.disabled = inputEl.value.trim() === '' || isStreaming;
+    });
+    inputEl.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        if (!sendBtn.disabled) sendMessage();
+      }
+    });
+    sendBtn.addEventListener('click', sendMessage);
+
+    function autoResize(el) {
+      el.style.height = 'auto';
+      el.style.height = Math.min(el.scrollHeight, 160) + 'px';
+    }
+
+    // ─── Toast ───
+    let toastTimer;
+    function showToast(msg, success = false) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.style.borderColor = success ? 'var(--green)' : 'var(--red)';
+      t.style.color = success ? 'var(--green)' : 'var(--red)';
+      t.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => t.classList.remove('show'), 3500);
+    }
+
+    init();
+  </script>
+</body>
+</html>
