@@ -2492,6 +2492,22 @@
     </div>
   </div>
 
+  <!-- ════════ USERNAME MODAL ════════ -->
+  <div class="username-backdrop" id="username-modal" role="dialog" aria-modal="true" aria-label="Set username">
+    <div class="username-box">
+      <span class="username-tag">Mind Lab Identity</span>
+      <h2>Choose Your<br><em>Handle.</em></h2>
+      <p class="username-sub">Your username appears on the leaderboard and tracks your personal bests across all three experiments.</p>
+      <div class="username-row">
+        <input type="text" id="username-input" placeholder="your_handle" maxlength="20" autocomplete="off" spellcheck="false" aria-label="Username">
+        <button class="username-submit hoverable" id="username-confirm">Enter</button>
+      </div>
+      <span class="username-hint">Letters, numbers, underscores. 3–20 characters.</span>
+      <span class="username-err" id="username-err"></span>
+      <button class="username-skip hoverable" id="username-skip">Skip for now</button>
+    </div>
+  </div>
+
   <!-- ════════════════════════════════════════
        JAVASCRIPT
   ════════════════════════════════════════ -->
@@ -3238,22 +3254,6 @@
 
   })();
   </script>
-
-  <!-- ════════ USERNAME MODAL ════════ -->
-  <div class="username-backdrop" id="username-modal" role="dialog" aria-modal="true" aria-label="Set username">
-    <div class="username-box">
-      <span class="username-tag">Mind Lab Identity</span>
-      <h2>Choose Your<br><em>Handle.</em></h2>
-      <p class="username-sub">Your username appears on the leaderboard and tracks your personal bests across all three experiments.</p>
-      <div class="username-row">
-        <input type="text" id="username-input" placeholder="your_handle" maxlength="20" autocomplete="off" spellcheck="false" aria-label="Username">
-        <button class="username-submit hoverable" id="username-confirm">Enter</button>
-      </div>
-      <span class="username-hint">Letters, numbers, underscores. 3–20 characters.</span>
-      <span class="username-err" id="username-err"></span>
-      <button class="username-skip hoverable" id="username-skip">Skip for now</button>
-    </div>
-  </div>
 
 </body>
 </html>
