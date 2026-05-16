@@ -1700,6 +1700,268 @@
       .stroop-btn { width: 78px; }
     }
 
+    /* ══════════════════════════════════════════
+       USERNAME MODAL
+    ══════════════════════════════════════════ */
+    .username-backdrop {
+      position: fixed; inset: 0;
+      background: rgba(4,4,4,0.92);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      z-index: 13000;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.4s var(--ease);
+    }
+    .username-backdrop.open { opacity: 1; pointer-events: all; }
+    .username-box {
+      position: relative;
+      border: 1px solid var(--low);
+      background: var(--bg2);
+      padding: 3.5rem;
+      max-width: 460px; width: 92%;
+      transform: translateY(28px);
+      transition: transform 0.5s var(--ease);
+    }
+    .username-backdrop.open .username-box { transform: translateY(0); }
+    .username-box::before, .username-box::after {
+      content: ''; position: absolute;
+      width: 18px; height: 18px;
+      border-style: solid; border-color: var(--accent); opacity: 0.35;
+    }
+    .username-box::before { top:-1px; left:-1px; border-width:1px 0 0 1px; }
+    .username-box::after  { bottom:-1px; right:-1px; border-width:0 1px 1px 0; }
+    .username-tag {
+      font-size: 0.62rem; font-weight: 800; letter-spacing: 4px;
+      text-transform: uppercase; color: var(--accent);
+      display: block; margin-bottom: 1.2rem;
+    }
+    .username-box h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem,5vw,2.6rem);
+      font-weight: 900; letter-spacing: -1.5px;
+      text-transform: uppercase; line-height: 1.05;
+      margin-bottom: 0.6rem;
+    }
+    .username-box h2 em { font-style: italic; color: var(--accent); }
+    .username-sub {
+      color: var(--muted); font-size: 0.83rem; line-height: 1.75;
+      margin-bottom: 2.25rem;
+    }
+    .username-row {
+      display: flex;
+      border: 1px solid rgba(201,168,76,0.28);
+      overflow: hidden; margin-bottom: 0.65rem;
+    }
+    .username-row input {
+      flex: 1; padding: 0.9rem 1.1rem;
+      background: transparent; border: none;
+      font-family: 'Syne', sans-serif;
+      font-size: 0.9rem; font-weight: 700;
+      letter-spacing: 1px; color: var(--text);
+      outline: none; min-width: 0;
+    }
+    .username-row input::placeholder { color: var(--muted); opacity: 0.45; }
+    .username-row input:focus { background: rgba(201,168,76,0.04); }
+    .username-submit {
+      padding: 0.9rem 1.4rem;
+      background: var(--accent); border: none;
+      font-family: 'Syne', sans-serif;
+      font-size: 0.68rem; font-weight: 800;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: var(--bg); cursor: none; white-space: nowrap;
+      flex-shrink: 0; transition: background 0.25s;
+    }
+    .username-submit:hover { background: #d4b360; }
+    .username-hint {
+      font-size: 0.6rem; font-weight: 700;
+      letter-spacing: 1px; color: var(--muted); opacity: 0.45;
+    }
+    .username-err {
+      font-size: 0.64rem; font-weight: 800;
+      letter-spacing: 1px; color: #c45c5c;
+      min-height: 1.2em; margin-top: 0.5rem;
+      display: block;
+    }
+    .username-skip {
+      background: none; border: none;
+      font-family: 'Syne', sans-serif;
+      font-size: 0.6rem; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: var(--muted); cursor: none;
+      margin-top: 1.5rem; display: block;
+      opacity: 0.45; transition: opacity 0.2s;
+    }
+    .username-skip:hover { opacity: 0.8; }
+
+    /* ══════════════════════════════════════════
+       PLAYER BAR
+    ══════════════════════════════════════════ */
+    .player-bar {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding: 0.85rem 2rem;
+      background: rgba(201,168,76,0.03);
+      border-bottom: 1px solid var(--low);
+      gap: 1.5rem; flex-wrap: wrap;
+    }
+    .player-identity { display: flex; align-items: center; gap: 0.75rem; }
+    .player-dot {
+      width: 7px; height: 7px;
+      background: var(--accent); border-radius: 50%;
+      flex-shrink: 0;
+      box-shadow: 0 0 10px rgba(201,168,76,0.7);
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%,100% { box-shadow: 0 0 6px rgba(201,168,76,0.5); }
+      50%      { box-shadow: 0 0 14px rgba(201,168,76,0.9); }
+    }
+    .player-name-tag {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.72rem; font-weight: 800;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: var(--accent);
+    }
+    .player-change {
+      background: none;
+      border: 1px solid var(--low);
+      font-family: 'Syne', sans-serif;
+      font-size: 0.56rem; font-weight: 800;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: var(--muted); padding: 0.22rem 0.6rem;
+      cursor: none; transition: border-color 0.25s, color 0.25s;
+    }
+    .player-change:hover { border-color: var(--accent); color: var(--accent); }
+    .player-bests { display: flex; gap: 2.5rem; flex-wrap: wrap; }
+    .pb-item { display: flex; flex-direction: column; align-items: flex-end; gap: 0.1rem; }
+    .pb-val {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem; font-weight: 900; color: var(--muted);
+      line-height: 1; transition: color 0.4s;
+    }
+    .pb-val.set { color: var(--accent); }
+    .pb-key {
+      font-size: 0.53rem; font-weight: 800;
+      letter-spacing: 2.5px; text-transform: uppercase; color: var(--muted);
+    }
+    @media(max-width:768px) {
+      .player-bar { padding: 0.75rem 1.5rem; }
+      .player-bests { gap: 1.5rem; }
+      .pb-item { align-items: flex-start; }
+    }
+
+    /* ══════════════════════════════════════════
+       LEADERBOARD
+    ══════════════════════════════════════════ */
+    .leaderboard-wrap {
+      border-top: 1px solid var(--low);
+      padding: 4rem 0 0; margin-top: 4.5rem;
+    }
+    .lb-top {
+      display: flex; align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 2.75rem; flex-wrap: wrap; gap: 1.25rem;
+    }
+    .lb-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem,3.5vw,2.4rem);
+      font-weight: 900; letter-spacing: -1.5px;
+      text-transform: uppercase; line-height: 1;
+    }
+    .lb-title em { font-style: italic; color: var(--accent); }
+    .lb-tabs-wrap { display: flex; border: 1px solid var(--low); }
+    .lb-tab {
+      background: none; border: none;
+      border-right: 1px solid var(--low);
+      padding: 0.6rem 1.2rem;
+      font-family: 'Syne', sans-serif;
+      font-size: 0.62rem; font-weight: 800;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: var(--muted); cursor: none;
+      transition: background 0.25s, color 0.25s;
+    }
+    .lb-tab:last-child { border-right: none; }
+    .lb-tab.active { background: rgba(201,168,76,0.08); color: var(--accent); }
+    .lb-tab:hover:not(.active) { color: var(--text); }
+    .lb-table { width: 100%; border-collapse: collapse; }
+    .lb-table thead tr { border-bottom: 1px solid var(--low); }
+    .lb-table th {
+      font-size: 0.57rem; font-weight: 800;
+      letter-spacing: 3px; text-transform: uppercase;
+      color: var(--muted); padding: 0 1rem 0.8rem;
+      text-align: left; opacity: 0.5;
+    }
+    .lb-table th:first-child { padding-left: 0; width: 3rem; }
+    .lb-table th:last-child  { text-align: right; }
+    .lb-table td {
+      padding: 0.9rem 1rem;
+      border-bottom: 1px solid rgba(240,236,230,0.04);
+      vertical-align: middle;
+    }
+    .lb-table td:first-child { padding-left: 0; }
+    .lb-table td:last-child  { text-align: right; }
+    .lb-table tr:last-child td { border-bottom: none; }
+    .lb-table tr.lb-me td { background: rgba(201,168,76,0.05); }
+    .lb-rank {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem; font-weight: 900;
+      color: rgba(240,236,230,0.18); display: block;
+    }
+    .lb-rank.r1 { color: #C9A84C; }
+    .lb-rank.r2 { color: #9e9e9e; }
+    .lb-rank.r3 { color: #9b7c5a; }
+    .lb-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.76rem; font-weight: 800;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--text);
+    }
+    .lb-me .lb-name { color: var(--accent); }
+    .lb-me .lb-rank { color: var(--accent); }
+    .lb-you {
+      display: inline-block;
+      font-size: 0.5rem; font-weight: 800;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: var(--bg); background: var(--accent);
+      padding: 0.15rem 0.42rem; margin-left: 0.5rem;
+      vertical-align: middle;
+    }
+    .lb-score {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem; font-weight: 900; color: var(--text);
+    }
+    .lb-score-unit {
+      font-size: 0.6rem; font-weight: 700;
+      letter-spacing: 1px; color: var(--muted); margin-left: 3px;
+    }
+    .lb-date {
+      font-size: 0.58rem; letter-spacing: 1px; color: var(--muted); opacity: 0.45;
+    }
+    .lb-empty {
+      padding: 3.5rem 0; text-align: center;
+      color: var(--muted); font-size: 0.72rem;
+      letter-spacing: 3px; text-transform: uppercase; opacity: 0.35;
+    }
+    .lb-new-badge {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.58rem; font-weight: 800;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: var(--accent); border: 1px solid var(--accent);
+      padding: 0.2rem 0.55rem; margin-left: 0.6rem;
+      vertical-align: middle; opacity: 0;
+      animation: badge-in 0.4s 0.1s var(--ease) forwards;
+    }
+    @keyframes badge-in {
+      from { opacity:0; transform:translateY(4px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    @media(max-width:768px) {
+      .leaderboard-wrap { padding-top:3rem; margin-top:3rem; }
+      .lb-top { flex-direction:column; align-items:flex-start; }
+      .lb-date { display:none; }
+    }
+
   </style>
 
 </head>
@@ -2028,6 +2290,29 @@
       <button class="game-tab hoverable" data-game="memory">03 — Memory Matrix</button>
     </div>
 
+    <!-- Player Identity Bar -->
+    <div class="player-bar">
+      <div class="player-identity">
+        <div class="player-dot"></div>
+        <span class="player-name-tag" id="player-name-display">Guest</span>
+        <button class="player-change hoverable" id="change-username-btn">Change</button>
+      </div>
+      <div class="player-bests">
+        <div class="pb-item">
+          <span class="pb-val" id="pb-stroop">—</span>
+          <span class="pb-key">Stroop PB</span>
+        </div>
+        <div class="pb-item">
+          <span class="pb-val" id="pb-reaction">—</span>
+          <span class="pb-key">Reaction PB</span>
+        </div>
+        <div class="pb-item">
+          <span class="pb-val" id="pb-memory">—</span>
+          <span class="pb-key">Memory PB</span>
+        </div>
+      </div>
+    </div>
+
     <div class="games-arena">
 
       <!-- ─── STROOP TEST ─── -->
@@ -2135,6 +2420,33 @@
       </div>
 
     </div>
+
+    <!-- Leaderboard -->
+    <div class="leaderboard-wrap">
+      <div class="lb-top">
+        <div>
+          <span class="s-label">Rankings</span>
+          <h3 class="lb-title">Global <em>Board.</em></h3>
+        </div>
+        <div class="lb-tabs-wrap">
+          <button class="lb-tab active hoverable" data-lb="stroop">Stroop</button>
+          <button class="lb-tab hoverable" data-lb="reaction">Reaction</button>
+          <button class="lb-tab hoverable" data-lb="memory">Memory</button>
+        </div>
+      </div>
+      <table class="lb-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Player</th>
+            <th>Score</th>
+            <th style="text-align:right">Date</th>
+          </tr>
+        </thead>
+        <tbody id="lb-body"></tbody>
+      </table>
+    </div>
+
   </section>
 
   <!-- ════════ CTA ════════ -->
@@ -2533,6 +2845,7 @@
       let insight = tiers[1][2];
       for (const [lo,hi,txt] of tiers) { if (sScore >= lo && sScore <= hi) { insight = txt; break; } }
       document.getElementById('stroop-insight').textContent = insight;
+      submitScore('stroop', sScore);
     }
 
     document.getElementById('stroop-start-btn').addEventListener('click', startStroop);
@@ -2634,6 +2947,7 @@
       setArenaClass('r-result');
       rcShow('rc-final');
       rState='done';
+      submitScore('reaction', avg);
     }
 
     // Initialize reaction panel
@@ -2729,13 +3043,217 @@
       for (const [lo,hi,txt] of tiers) { if (mLevel >= lo && mLevel <= hi) { ins=txt; break; } }
       document.getElementById('m-insight').textContent = ins;
       showMemoryState('memory-result');
+      submitScore('memory', mLevel);
     }
 
     document.getElementById('memory-start-btn').addEventListener('click', () => { mLevel=1; startMemoryLevel(); });
     document.getElementById('memory-retry-btn').addEventListener('click', () => { mLevel=1; showMemoryState('memory-start'); });
 
+    /* ══════════════════════════════════════════
+       USERNAME + LEADERBOARD SYSTEM
+    ══════════════════════════════════════════ */
+    const LS_USER = 'somtrx_user';
+    const LS_LB   = 'somtrx_lb';
+
+    const SEEDS = [
+      { name:'psych_wolf',   stroop:28, reaction:187, memory:8,  date:'May 10' },
+      { name:'cognition_x',  stroop:24, reaction:201, memory:7,  date:'May 11' },
+      { name:'sys_thinker',  stroop:22, reaction:215, memory:6,  date:'May 09' },
+      { name:'neuro_flux',   stroop:19, reaction:228, memory:5,  date:'May 12' },
+      { name:'brain_arch',   stroop:17, reaction:245, memory:4,  date:'May 08' },
+      { name:'bias_breaker', stroop:15, reaction:261, memory:4,  date:'May 07' },
+      { name:'soma_loop',    stroop:13, reaction:279, memory:3,  date:'May 06' },
+    ];
+
+    function loadUser() {
+      try { return JSON.parse(localStorage.getItem(LS_USER)) || null; } catch { return null; }
+    }
+    function saveUser(u) {
+      try { localStorage.setItem(LS_USER, JSON.stringify(u)); } catch {}
+    }
+    function loadLB() {
+      try {
+        const raw = JSON.parse(localStorage.getItem(LS_LB));
+        return Array.isArray(raw) && raw.length ? raw : JSON.parse(JSON.stringify(SEEDS));
+      } catch { return JSON.parse(JSON.stringify(SEEDS)); }
+    }
+    function saveLB(data) {
+      try { localStorage.setItem(LS_LB, JSON.stringify(data)); } catch {}
+    }
+
+    // Init leaderboard with seeds if first visit
+    if (!localStorage.getItem(LS_LB)) saveLB(JSON.parse(JSON.stringify(SEEDS)));
+
+    let currentUser = loadUser();
+    let currentLbTab = 'stroop';
+
+    // ─── Username Modal ───
+    const uModal = document.getElementById('username-modal');
+    const uInput = document.getElementById('username-input');
+    const uErr   = document.getElementById('username-err');
+
+    function openUsernameModal() {
+      uInput.value = currentUser?.name || '';
+      uErr.textContent = '';
+      uModal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      setTimeout(() => uInput.focus(), 350);
+    }
+    function closeUsernameModal() {
+      uModal.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    function validateName(n) {
+      if (n.length < 3)  return 'At least 3 characters required.';
+      if (n.length > 20) return 'Maximum 20 characters.';
+      if (!/^[a-zA-Z0-9_]+$/.test(n)) return 'Letters, numbers, underscores only.';
+      return '';
+    }
+    function confirmUsername() {
+      const val = uInput.value.trim();
+      const err = validateName(val);
+      uErr.textContent = err;
+      if (err) return;
+      const prev = loadUser();
+      currentUser = { name: val, stroop: prev?.stroop ?? null, reaction: prev?.reaction ?? null, memory: prev?.memory ?? null };
+      saveUser(currentUser);
+      closeUsernameModal();
+      refreshPlayerBar();
+      renderLB(currentLbTab);
+    }
+
+    document.getElementById('username-confirm').addEventListener('click', confirmUsername);
+    uInput.addEventListener('keydown', e => { if (e.key === 'Enter') confirmUsername(); });
+    document.getElementById('username-skip').addEventListener('click', closeUsernameModal);
+    document.getElementById('change-username-btn').addEventListener('click', openUsernameModal);
+
+    // Show modal on first visit (no username set yet), after loader fades
+    if (!currentUser) setTimeout(openUsernameModal, 3200);
+
+    // ─── Player Bar ───
+    function refreshPlayerBar() {
+      currentUser = loadUser();
+      const nameEl = document.getElementById('player-name-display');
+      nameEl.textContent = currentUser ? currentUser.name : 'Guest';
+
+      function setPB(elId, val, suffix) {
+        const el = document.getElementById(elId);
+        if (val != null) {
+          el.textContent = val + suffix;
+          el.classList.add('set');
+        } else {
+          el.textContent = '—';
+          el.classList.remove('set');
+        }
+      }
+      setPB('pb-stroop',   currentUser?.stroop,   ' pts');
+      setPB('pb-reaction', currentUser?.reaction != null ? currentUser.reaction : null, 'ms');
+      setPB('pb-memory',   currentUser?.memory != null ? 'Lv ' + currentUser.memory : null, '');
+      if (currentUser?.memory != null) {
+        const el = document.getElementById('pb-memory');
+        el.textContent = 'Lv ' + currentUser.memory;
+        el.classList.add('set');
+      }
+    }
+    refreshPlayerBar();
+
+    // ─── Submit Score ───
+    function submitScore(game, score) {
+      if (!currentUser) return;
+      const better = game === 'reaction'
+        ? (currentUser[game] == null || score < currentUser[game])
+        : (currentUser[game] == null || score > currentUser[game]);
+      if (!better) return;
+
+      currentUser[game] = score;
+      saveUser(currentUser);
+
+      const lb = loadLB();
+      const today = new Date().toLocaleDateString('en-US', { month:'short', day:'numeric' });
+      const idx = lb.findIndex(e => e.name.toLowerCase() === currentUser.name.toLowerCase());
+      if (idx >= 0) {
+        lb[idx][game] = score;
+        lb[idx].date = today;
+      } else {
+        lb.push({ name: currentUser.name, stroop: currentUser.stroop, reaction: currentUser.reaction, memory: currentUser.memory, date: today });
+      }
+      saveLB(lb);
+      refreshPlayerBar();
+      renderLB(currentLbTab);
+      flashNewBest(game);
+    }
+
+    function flashNewBest(game) {
+      const map = { stroop:'pb-stroop', reaction:'pb-reaction', memory:'pb-memory' };
+      const el = document.getElementById(map[game]);
+      if (!el) return;
+      el.style.transition = 'none';
+      el.style.color = '#fff';
+      setTimeout(() => { el.style.transition = 'color 0.8s'; el.style.color = ''; }, 60);
+    }
+
+    // ─── Leaderboard Rendering ───
+    document.querySelectorAll('.lb-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.lb-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        currentLbTab = tab.dataset.lb;
+        renderLB(currentLbTab);
+      });
+    });
+
+    function renderLB(game) {
+      const lb = loadLB();
+      const body = document.getElementById('lb-body');
+      const me = currentUser?.name?.toLowerCase() || '';
+
+      const sorted = lb
+        .filter(e => e[game] != null)
+        .sort((a, b) => game === 'reaction' ? a[game] - b[game] : b[game] - a[game]);
+
+      if (!sorted.length) {
+        body.innerHTML = `<tr><td colspan="4"><div class="lb-empty">No scores yet — be the first.</div></td></tr>`;
+        return;
+      }
+
+      body.innerHTML = sorted.slice(0, 10).map((e, i) => {
+        const rank = i + 1;
+        const rCls = rank === 1 ? 'r1' : rank === 2 ? 'r2' : rank === 3 ? 'r3' : '';
+        const isMe = e.name.toLowerCase() === me;
+        const youTag = isMe ? `<span class="lb-you">You</span>` : '';
+        let scoreHTML = '';
+        if (game === 'stroop')   scoreHTML = `<span class="lb-score">${e[game]}</span><span class="lb-score-unit">pts</span>`;
+        if (game === 'reaction') scoreHTML = `<span class="lb-score">${e[game]}</span><span class="lb-score-unit">ms</span>`;
+        if (game === 'memory')   scoreHTML = `<span class="lb-score">Lv ${e[game]}</span>`;
+        return `<tr class="${isMe ? 'lb-me' : ''}">
+          <td><span class="lb-rank ${rCls}">${rank}</span></td>
+          <td><span class="lb-name">${e.name}${youTag}</span></td>
+          <td>${scoreHTML}</td>
+          <td class="lb-date">${e.date || '—'}</td>
+        </tr>`;
+      }).join('');
+    }
+
+    renderLB('stroop');
+
   })();
   </script>
+
+  <!-- ════════ USERNAME MODAL ════════ -->
+  <div class="username-backdrop" id="username-modal" role="dialog" aria-modal="true" aria-label="Set username">
+    <div class="username-box">
+      <span class="username-tag">Mind Lab Identity</span>
+      <h2>Choose Your<br><em>Handle.</em></h2>
+      <p class="username-sub">Your username appears on the leaderboard and tracks your personal bests across all three experiments.</p>
+      <div class="username-row">
+        <input type="text" id="username-input" placeholder="your_handle" maxlength="20" autocomplete="off" spellcheck="false" aria-label="Username">
+        <button class="username-submit hoverable" id="username-confirm">Enter</button>
+      </div>
+      <span class="username-hint">Letters, numbers, underscores. 3–20 characters.</span>
+      <span class="username-err" id="username-err"></span>
+      <button class="username-skip hoverable" id="username-skip">Skip for now</button>
+    </div>
+  </div>
 
 </body>
 </html>
