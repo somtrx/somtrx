@@ -88,14 +88,6 @@
       color: var(--muted); border: 1px solid var(--low);
       padding: 0.3rem 0.7rem;
     }
-    .topnav-settings-btn {
-      background: none; border: 1px solid var(--low);
-      padding: 0.35rem 0.75rem;
-      font-size: 0.6rem; font-weight: 800;
-      letter-spacing: 2px; text-transform: uppercase;
-      color: var(--muted); transition: border-color 0.25s, color 0.25s;
-    }
-    .topnav-settings-btn:hover { border-color: var(--accent); color: var(--accent); }
     .clear-btn {
       background: none; border: 1px solid var(--low);
       padding: 0.35rem 0.75rem;
@@ -443,175 +435,6 @@
       margin-top: 0.6rem; text-align: center;
     }
 
-    /* ══ API KEY SETUP SCREEN ══ */
-    .setup-screen {
-      position: fixed; inset: 0;
-      background: var(--bg);
-      display: flex; align-items: center; justify-content: center;
-      z-index: 1000;
-      padding: 2rem;
-      opacity: 0;
-      animation: fade-in 0.5s 0.1s var(--ease) forwards;
-    }
-    .setup-box {
-      max-width: 520px; width: 100%;
-      border: 1px solid var(--low);
-      background: var(--bg2);
-      padding: 3.5rem;
-      position: relative;
-      transform: translateY(24px);
-      animation: setup-in 0.6s 0.2s var(--ease) forwards;
-    }
-    @keyframes setup-in {
-      from { opacity:0; transform:translateY(24px); }
-      to   { opacity:1; transform:translateY(0); }
-    }
-    .setup-box::before, .setup-box::after {
-      content:''; position:absolute;
-      width:18px; height:18px;
-      border-style:solid; border-color:var(--accent); opacity:0.35;
-    }
-    .setup-box::before { top:-1px; left:-1px; border-width:1px 0 0 1px; }
-    .setup-box::after  { bottom:-1px; right:-1px; border-width:0 1px 1px 0; }
-    .setup-tag {
-      font-size: 0.6rem; font-weight: 800;
-      letter-spacing: 4px; text-transform: uppercase;
-      color: var(--accent); display: block; margin-bottom: 1.5rem;
-    }
-    .setup-box h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2rem,5vw,3rem);
-      font-weight: 900; letter-spacing: -2px;
-      text-transform: uppercase; line-height: 1.05;
-      margin-bottom: 0.75rem;
-    }
-    .setup-box h1 em { font-style:italic; color:var(--accent); }
-    .setup-desc {
-      color: var(--muted); font-size: 0.83rem;
-      line-height: 1.75; margin-bottom: 2.5rem;
-    }
-    .setup-step {
-      display: flex; align-items: flex-start; gap: 1rem;
-      padding: 1rem; border: 1px solid var(--low);
-      margin-bottom: 0.6rem; background: var(--bg3);
-    }
-    .setup-step-num {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.2rem; font-weight: 900;
-      color: var(--accent); opacity: 0.5; flex-shrink: 0; line-height: 1;
-    }
-    .setup-step-text {
-      font-size: 0.78rem; font-weight: 600;
-      color: var(--muted); line-height: 1.6;
-    }
-    .setup-step-text a {
-      color: var(--accent); border-bottom: 1px solid rgba(201,168,76,0.3);
-      transition: border-color 0.2s;
-    }
-    .setup-step-text a:hover { border-color: var(--accent); }
-    .setup-input-row {
-      display: flex; margin-top: 1.75rem; margin-bottom: 0.6rem;
-      border: 1px solid rgba(201,168,76,0.25); overflow: hidden;
-    }
-    .setup-input-row input {
-      flex: 1; padding: 0.9rem 1.1rem;
-      background: transparent; border: none; outline: none;
-      font-size: 0.85rem; font-weight: 700;
-      letter-spacing: 0.5px; color: var(--text);
-    }
-    .setup-input-row input::placeholder { color: var(--muted); opacity: 0.4; }
-    .setup-submit {
-      padding: 0.9rem 1.5rem;
-      background: var(--accent); border: none;
-      font-family: 'Syne', sans-serif;
-      font-size: 0.68rem; font-weight: 800;
-      letter-spacing: 2px; text-transform: uppercase;
-      color: var(--bg); white-space: nowrap;
-      flex-shrink: 0; transition: background 0.25s;
-    }
-    .setup-submit:hover { background: #d4b360; }
-    .setup-err {
-      font-size: 0.64rem; font-weight: 800;
-      letter-spacing: 1px; color: var(--red);
-      min-height: 1.2em; display: block;
-    }
-    .setup-note {
-      font-size: 0.62rem; font-weight: 600;
-      color: var(--muted); opacity: 0.4;
-      margin-top: 1rem; line-height: 1.6;
-    }
-
-    /* ══ SETTINGS MODAL ══ */
-    .settings-backdrop {
-      position: fixed; inset: 0;
-      background: rgba(4,4,4,0.88);
-      backdrop-filter: blur(12px);
-      z-index: 500;
-      display: flex; align-items: center; justify-content: center;
-      padding: 2rem;
-      opacity: 0; pointer-events: none;
-      transition: opacity 0.3s var(--ease);
-    }
-    .settings-backdrop.open { opacity: 1; pointer-events: all; }
-    .settings-box {
-      max-width: 440px; width: 100%;
-      border: 1px solid var(--low);
-      background: var(--bg2);
-      padding: 2.5rem;
-      position: relative;
-      transform: translateY(20px);
-      transition: transform 0.4s var(--ease);
-    }
-    .settings-backdrop.open .settings-box { transform: translateY(0); }
-    .settings-box::before, .settings-box::after {
-      content:''; position:absolute;
-      width:14px; height:14px;
-      border-style:solid; border-color:var(--accent); opacity:0.3;
-    }
-    .settings-box::before { top:-1px; left:-1px; border-width:1px 0 0 1px; }
-    .settings-box::after  { bottom:-1px; right:-1px; border-width:0 1px 1px 0; }
-    .settings-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.5rem; font-weight: 900;
-      letter-spacing: -1px; text-transform: uppercase;
-      margin-bottom: 1.75rem;
-    }
-    .settings-title em { font-style:italic; color:var(--accent); }
-    .settings-label {
-      font-size: 0.6rem; font-weight: 800;
-      letter-spacing: 3px; text-transform: uppercase;
-      color: var(--muted); display: block; margin-bottom: 0.5rem;
-    }
-    .settings-input-row {
-      display: flex; border: 1px solid var(--low); margin-bottom: 1.25rem;
-    }
-    .settings-input-row input {
-      flex: 1; padding: 0.8rem 1rem;
-      background: transparent; border: none; outline: none;
-      font-size: 0.82rem; font-weight: 700;
-      color: var(--text);
-    }
-    .settings-input-row input::placeholder { color: var(--muted); opacity: 0.4; }
-    .settings-save {
-      width: 100%; padding: 0.85rem;
-      background: var(--accent); border: none;
-      font-family: 'Syne', sans-serif;
-      font-size: 0.7rem; font-weight: 800;
-      letter-spacing: 3px; text-transform: uppercase;
-      color: var(--bg); transition: background 0.25s;
-      margin-bottom: 0.75rem;
-    }
-    .settings-save:hover { background: #d4b360; }
-    .settings-close {
-      width: 100%; padding: 0.75rem;
-      background: none; border: 1px solid var(--low);
-      font-family: 'Syne', sans-serif;
-      font-size: 0.65rem; font-weight: 800;
-      letter-spacing: 2px; text-transform: uppercase;
-      color: var(--muted); transition: border-color 0.25s, color 0.25s;
-    }
-    .settings-close:hover { border-color: var(--accent); color: var(--accent); }
-
     /* ══ ERROR TOAST ══ */
     .toast {
       position: fixed; bottom: 2rem; left: 50%;
@@ -661,62 +484,16 @@
     @media (max-width: 480px) {
       .topnav { padding: 0 1rem; }
       .topnav-model-badge { display: none; }
-      .setup-box { padding: 2rem 1.5rem; }
-      .setup-steps { display: none; }
     }
   </style>
 </head>
 <body>
 
-  <!-- ════════ SETUP SCREEN ════════ -->
-  <div class="setup-screen" id="setup-screen">
-    <div class="setup-box">
-      <span class="setup-tag">Initial Configuration</span>
-      <h1>Activate<br><em>SOMA.</em></h1>
-      <p class="setup-desc">SOMA runs on Groq's free AI infrastructure — fast, intelligent, and built for depth. You'll need a free Groq API key to get started.</p>
-
-      <div class="setup-steps" id="setup-steps">
-        <div class="setup-step">
-          <span class="setup-step-num">01</span>
-          <p class="setup-step-text">Go to <a href="https://console.groq.com" target="_blank">console.groq.com</a> and create a free account.</p>
-        </div>
-        <div class="setup-step">
-          <span class="setup-step-num">02</span>
-          <p class="setup-step-text">Navigate to <strong>API Keys</strong> and click <strong>Create API Key</strong>.</p>
-        </div>
-        <div class="setup-step">
-          <span class="setup-step-num">03</span>
-          <p class="setup-step-text">Copy the key (starts with <code>gsk_</code>) and paste it below.</p>
-        </div>
-      </div>
-
-      <div class="setup-input-row">
-        <input type="password" id="setup-key-input" placeholder="gsk_••••••••••••••••••••" autocomplete="off" spellcheck="false">
-        <button class="setup-submit" id="setup-submit-btn">Activate</button>
-      </div>
-      <span class="setup-err" id="setup-err"></span>
-      <p class="setup-note">Your key is stored only in your browser's localStorage and never sent anywhere except directly to Groq's servers.</p>
-    </div>
-  </div>
-
-  <!-- ════════ SETTINGS MODAL ════════ -->
-  <div class="settings-backdrop" id="settings-modal">
-    <div class="settings-box">
-      <h2 class="settings-title">API <em>Settings</em></h2>
-      <label class="settings-label">Groq API Key</label>
-      <div class="settings-input-row">
-        <input type="password" id="settings-key-input" placeholder="gsk_••••••••••••••••••••" autocomplete="off">
-      </div>
-      <button class="settings-save" id="settings-save-btn">Save Key</button>
-      <button class="settings-close" id="settings-close-btn">Cancel</button>
-    </div>
-  </div>
-
   <!-- ════════ TOAST ════════ -->
   <div class="toast" id="toast"></div>
 
   <!-- ════════ APP ════════ -->
-  <div class="app" id="app" style="display:none;">
+  <div class="app" id="app" style="display:none; opacity:0; transition:opacity 0.4s ease;">
 
     <!-- Top Nav -->
     <header class="topnav">
@@ -731,7 +508,6 @@
       <div class="topnav-right">
         <span class="topnav-model-badge">Llama 3.3 · Groq</span>
         <button class="clear-btn" id="clear-btn">Clear</button>
-        <button class="topnav-settings-btn" id="open-settings-btn">API Key</button>
       </div>
     </header>
 
@@ -770,6 +546,7 @@
     <!-- Chat Area -->
     <main class="chat-area">
       <div class="messages-wrap" id="messages-wrap">
+
         <!-- Empty state shown initially -->
         <div class="empty-state" id="empty-state">
           <div class="empty-icon">
@@ -803,7 +580,6 @@
   </div>
 
   <script>
-    const LS_KEY = 'somtrx_groq_key';
     const LS_HISTORY = 'somtrx_chat_history';
 
     const SYSTEM_PROMPT = `You are SOMA — the embedded intelligence of SOMTRX, a psychology and self-improvement platform founded by Soumyakanta Nayak.
@@ -840,7 +616,6 @@ Never break character. You are SOMA.`;
       "Why do people stay in situations they know are bad for them?",
     ];
 
-    let apiKey = localStorage.getItem(LS_KEY) || '';
     let conversationHistory = [];
     let isStreaming = false;
 
@@ -848,19 +623,12 @@ Never break character. You are SOMA.`;
     function init() {
       loadHistory();
       renderSuggestedPrompts();
-      if (apiKey) {
-        showApp();
-      } else {
-        document.getElementById('setup-screen').style.display = 'flex';
-      }
+      showApp();
     }
 
     function showApp() {
-      document.getElementById('setup-screen').style.display = 'none';
       const app = document.getElementById('app');
       app.style.display = 'grid';
-      app.style.opacity = '0';
-      app.style.transition = 'opacity 0.4s ease';
       requestAnimationFrame(() => { app.style.opacity = '1'; });
       if (conversationHistory.length > 0) {
         document.getElementById('empty-state').style.display = 'none';
@@ -907,9 +675,7 @@ Never break character. You are SOMA.`;
       conversationHistory = [];
       localStorage.removeItem(LS_HISTORY);
       const wrap = document.getElementById('messages-wrap');
-      // Remove all .msg elements
       wrap.querySelectorAll('.msg').forEach(el => el.remove());
-      // Show empty state
       const emptyState = document.getElementById('empty-state');
       if (emptyState) emptyState.style.display = 'flex';
     }
@@ -926,33 +692,20 @@ Never break character. You are SOMA.`;
     function renderMarkdown(text) {
       if (!text) return '';
       let html = text
-        // Escape HTML first
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
-        // Code blocks
         .replace(/```[\w]*\n?([\s\S]*?)```/g, '<pre><code>$1</code></pre>')
-        // Inline code
         .replace(/`([^`]+)`/g, '<code>$1</code>')
-        // Bold
         .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-        // Italic
         .replace(/\*([^*]+)\*/g, '<em>$1</em>')
-        // ### Heading
         .replace(/^###\s+(.+)$/gm, '<h3>$1</h3>')
-        // ## Heading
         .replace(/^##\s+(.+)$/gm, '<h3>$1</h3>')
-        // Blockquote
         .replace(/^>\s+(.+)$/gm, '<blockquote>$1</blockquote>')
-        // Bullet lists
         .replace(/^[-•]\s+(.+)$/gm, '<li>$1</li>')
-        // Numbered lists
         .replace(/^\d+\.\s+(.+)$/gm, '<li>$1</li>');
 
-      // Wrap consecutive <li> in <ul>
       html = html.replace(/(<li>.*<\/li>\n?)+/g, match => `<ul>${match}</ul>`);
-
-      // Paragraphs from double newlines
       html = html.replace(/\n{2,}/g, '</p><p>').replace(/\n/g, '<br>');
       if (!html.startsWith('<')) html = `<p>${html}</p>`;
       html = html.replace(/<p><\/p>/g, '');
@@ -1030,12 +783,10 @@ Never break character. You are SOMA.`;
       autoResize(input);
       document.getElementById('send-btn').disabled = true;
 
-      // Add user message
       addMessageToDOM('user', text);
       conversationHistory.push({ role: 'user', content: text });
       saveHistory();
 
-      // Show typing
       addTypingIndicator();
       isStreaming = true;
 
@@ -1046,29 +797,19 @@ Never break character. You are SOMA.`;
           ...conversationHistory
         ];
 
-        const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        const response = await fetch('/api/chat', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${apiKey}`
-          },
-          body: JSON.stringify({
-            model: 'llama-3.3-70b-versatile',
-            messages,
-            max_tokens: 1024,
-            temperature: 0.72,
-            stream: true
-          })
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ messages })
         });
 
         if (!response.ok) {
           const errData = await response.json().catch(() => ({}));
-          throw new Error(errData?.error?.message || `API error ${response.status}`);
+          throw new Error(errData?.error || `API error ${response.status}`);
         }
 
         removeTypingIndicator();
 
-        // Add empty SOMA message for streaming
         const somaEl = addMessageToDOM('soma', '', true);
         const textEl = somaEl.querySelector('.msg-text');
         textEl.innerHTML = '<span class="stream-cursor"></span>';
@@ -1095,73 +836,22 @@ Never break character. You are SOMA.`;
           }
         }
 
-        // Finalise
         textEl.innerHTML = renderMarkdown(fullText);
         conversationHistory.push({ role: 'assistant', content: fullText });
         saveHistory();
 
       } catch (err) {
         removeTypingIndicator();
-        const errMsg = err.message?.includes('401') || err.message?.includes('invalid_api_key')
-          ? 'Invalid API key. Please update it via the API Key button.'
-          : err.message?.includes('rate_limit')
+        const errMsg = err.message?.includes('rate_limit')
           ? 'Rate limit reached. Wait a moment and try again.'
-          : `Error: ${err.message}`;
+          : `Something went wrong. Please try again.`;
         showToast(errMsg);
-        // Remove last user message from history on error
         if (conversationHistory.at(-1)?.role === 'user') conversationHistory.pop();
       } finally {
         isStreaming = false;
         document.getElementById('send-btn').disabled = input.value.trim() === '';
       }
     }
-
-    // ─── Setup Screen ───
-    document.getElementById('setup-submit-btn').addEventListener('click', async () => {
-      const key = document.getElementById('setup-key-input').value.trim();
-      const errEl = document.getElementById('setup-err');
-      if (!key.startsWith('gsk_')) {
-        errEl.textContent = 'API key should start with gsk_';
-        return;
-      }
-      errEl.textContent = 'Verifying…';
-      try {
-        const res = await fetch('https://api.groq.com/openai/v1/models', {
-          headers: { 'Authorization': `Bearer ${key}` }
-        });
-        if (!res.ok) throw new Error('Invalid key');
-        apiKey = key;
-        localStorage.setItem(LS_KEY, key);
-        errEl.textContent = '';
-        showApp();
-      } catch {
-        errEl.textContent = 'Could not verify key. Check it and try again.';
-      }
-    });
-    document.getElementById('setup-key-input').addEventListener('keydown', e => {
-      if (e.key === 'Enter') document.getElementById('setup-submit-btn').click();
-    });
-
-    // ─── Settings Modal ───
-    document.getElementById('open-settings-btn').addEventListener('click', () => {
-      document.getElementById('settings-key-input').value = apiKey;
-      document.getElementById('settings-modal').classList.add('open');
-    });
-    document.getElementById('settings-close-btn').addEventListener('click', () => {
-      document.getElementById('settings-modal').classList.remove('open');
-    });
-    document.getElementById('settings-save-btn').addEventListener('click', () => {
-      const key = document.getElementById('settings-key-input').value.trim();
-      if (!key) return;
-      apiKey = key;
-      localStorage.setItem(LS_KEY, key);
-      document.getElementById('settings-modal').classList.remove('open');
-      showToast('API key updated.', true);
-    });
-    document.getElementById('settings-modal').addEventListener('click', e => {
-      if (e.target === document.getElementById('settings-modal'))
-        document.getElementById('settings-modal').classList.remove('open');
-    });
 
     // ─── Clear ───
     document.getElementById('clear-btn').addEventListener('click', () => {
